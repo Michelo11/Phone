@@ -1,2 +1,7 @@
-package me.michelemanna.phone.commands;public class SubCommand {
+package me.michelemanna.phone.commands;
+
+import org.bukkit.entity.Player;
+
+public interface SubCommand {
+    void execute(Player player, String[] args);
 }

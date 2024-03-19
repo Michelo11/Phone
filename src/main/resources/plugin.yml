@@ -1,4 +1,7 @@
 name: Phone
 version: '${version}'
-main: me.michelemanna.phone.Phone
+main: me.michelemanna.phone.PhonePlugin
 api-version: '1.20'
+commands:
+    phone:
+        description: Open the phone

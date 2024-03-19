@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'me.michelemanna'
@@ -15,10 +16,24 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven {
+        url = "https://repo.xenondevs.xyz/releases"
+    }
+    maven {
+        name = "CodeMC"
+        url = "https://repo.codemc.io/repository/maven-public/"
+    }
 }
 
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT"
+    implementation "com.zaxxer:HikariCP:5.1.0"
+    implementation "xyz.xenondevs.invui:invui:1.26"
+    implementation("de.tr7zw:item-nbt-api:2.12.2")
+}
+
+shadowJar {
+    relocate("de.tr7zw.changeme.nbtapi", "me.michelemanna.phone.nbtapi")
 }
 
 def targetJavaVersion = 17
@@ -47,3 +62,5 @@ processResources {
         expand props
     }
 }
+
+tasks.build.dependsOn tasks.shadowJar
