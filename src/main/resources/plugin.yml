@@ -1,0 +1,4 @@
+name: Phone
+version: '${version}'
+main: me.michelemanna.phone.Phone
+api-version: '1.20'
