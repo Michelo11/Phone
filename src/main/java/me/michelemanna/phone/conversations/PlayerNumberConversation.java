@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,7 +15,7 @@ public class PlayerNumberConversation extends StringPrompt {
     @NotNull
     @Override
     public String getPromptText(@NotNull ConversationContext context) {
-        return "Enter the number of the contact you want to add:";
+        return PhonePlugin.getInstance().getMessage("enter-number");
     }
 
     @Nullable
@@ -29,14 +30,14 @@ public class PlayerNumberConversation extends StringPrompt {
                 UUID owner = PhonePlugin.getInstance().getDatabase().getOwner(Long.parseLong(input)).join();
 
                 if (owner == null) {
-                    context.getForWhom().sendRawMessage("§cThis number is not associated with any player.");
+                    context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("number-not-found"));
                     return;
                 }
 
-                PhonePlugin.getInstance().getDatabase().addContact(owner, name, Long.parseLong(input));
-                context.getForWhom().sendRawMessage("§aContact added successfully.");
+                PhonePlugin.getInstance().getDatabase().addContact(owner, ((Player) context.getForWhom()).getUniqueId(), name, Long.parseLong(input));
+                context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("contact-added"));
             } catch (NumberFormatException e) {
-                context.getForWhom().sendRawMessage("§cPlease enter a valid number.");
+                context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("invalid-number"));
             }
         });
 

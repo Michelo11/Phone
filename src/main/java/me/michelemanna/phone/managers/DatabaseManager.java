@@ -51,6 +51,7 @@ public class DatabaseManager {
                         "id INT PRIMARY KEY AUTO_INCREMENT," +
                         "name VARCHAR(16) NOT NULL," +
                         "number VARCHAR(10) NOT NULL," +
+                        "player VARCHAR(36) NOT NULL," +
                         "owner VARCHAR(36) NOT NULL" +
                         ")"
         );
@@ -157,7 +158,7 @@ public class DatabaseManager {
 
                 while (set.next()) {
                     contacts
-                            .add(new Contact(set.getString("name"), UUID.fromString(set.getString("owner")), set.getLong("number")));
+                            .add(new Contact(set.getString("name"), UUID.fromString(set.getString("player")), set.getLong("number")));
                 }
 
                 future.complete(contacts);
@@ -173,15 +174,16 @@ public class DatabaseManager {
         return future;
     }
 
-    public void addContact(UUID owner, String name, long number) {
+    public void addContact(UUID player, UUID owner, String name, long number) {
         Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
             try {
                 Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO phoneContacts (name, number, owner) VALUES (?, ?, ?)");
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO phoneContacts (name, number, player, owner) VALUES (?, ?, ?, ?)");
 
                 statement.setString(1, name);
                 statement.setLong(2, number);
-                statement.setString(3, owner.toString());
+                statement.setString(3, player.toString());
+                statement.setString(4, owner.toString());
 
                 statement.executeUpdate();
                 statement.close();

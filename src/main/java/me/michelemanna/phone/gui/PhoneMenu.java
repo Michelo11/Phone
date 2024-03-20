@@ -1,9 +1,7 @@
 package me.michelemanna.phone.gui;
 
 import me.michelemanna.phone.PhonePlugin;
-import me.michelemanna.phone.gui.items.AddItem;
-import me.michelemanna.phone.gui.items.ChangePageItem;
-import me.michelemanna.phone.gui.items.ContactItem;
+import me.michelemanna.phone.gui.items.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,14 +11,15 @@ import xyz.xenondevs.invui.item.Item;
 import xyz.xenondevs.invui.item.builder.ItemBuilder;
 import xyz.xenondevs.invui.window.Window;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
 public class PhoneMenu {
-    public static void openPhone(Player player) {
-         PhonePlugin.getInstance().getDatabase().getContacts(player.getUniqueId()).thenAccept(contacts -> {
+    public static void openPhone(Player player, UUID owner) {
+         PhonePlugin.getInstance().getDatabase().getContacts(owner).thenAccept(contacts -> {
              if (contacts == null) {
-                 player.sendMessage("§cAn error occurred while loading your contacts.");
+                 player.sendMessage(PhonePlugin.getInstance().getMessage("gui.error"));
                  return;
              }
 
@@ -36,6 +35,8 @@ public class PhoneMenu {
                      .addIngredient('#', new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).setDisplayName(" "))
                      .addIngredient('.', Markers.CONTENT_LIST_SLOT_HORIZONTAL)
                      .addIngredient('a', new AddItem())
+                     .addIngredient('c', new AcceptItem())
+                     .addIngredient('d', new CloseItem(player))
                      .addIngredient('<', new ChangePageItem(false))
                      .addIngredient('>', new ChangePageItem(true));
 
@@ -48,7 +49,7 @@ public class PhoneMenu {
 
              Window window = Window.single()
                      .setViewer(player)
-                     .setTitle("Phone Menu")
+                     .setTitle(PhonePlugin.getInstance().getMessage("gui.title"))
                      .setGui(gui)
                      .build();
 

@@ -8,12 +8,12 @@ public class RegenCommand implements SubCommand {
     @Override
     public void execute(Player player, String[] args) {
         if (!player.hasPermission("phone.regenerate")) {
-            player.sendMessage("§cYou don't have permission to use this command!");
+            player.sendMessage(PhonePlugin.getInstance().getMessage("no-permission"));
             return;
         }
 
         if (args.length != 2) {
-            player.sendMessage("§cUsage: /phone regen <player>");
+            player.sendMessage(PhonePlugin.getInstance().getMessage("regen-usage"));
             return;
         }
 
@@ -22,12 +22,12 @@ public class RegenCommand implements SubCommand {
         Player target = PhonePlugin.getInstance().getServer().getPlayer(args[1]);
 
         if (target == null) {
-            player.sendMessage("§cThe player is not online");
+            player.sendMessage(PhonePlugin.getInstance().getMessage("player-not-found"));
             return;
         }
 
         PhonePlugin.getInstance().getDatabase().updatePhoneNumber(target.getUniqueId(), regenNumber);
 
-        player.sendMessage("§aThe new phone number of " + player.getName() + " is: " + regenNumber);
+        player.sendMessage(PhonePlugin.getInstance().getMessage("phone-regenerated").replace("%player%", args[1]));
     }
 }

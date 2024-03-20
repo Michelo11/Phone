@@ -3,6 +3,7 @@ package me.michelemanna.phone.gui.items;
 import me.michelemanna.phone.PhonePlugin;
 import me.michelemanna.phone.conversations.PlayerMessageConversation;
 import me.michelemanna.phone.data.Contact;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
@@ -33,7 +34,7 @@ public class ContactItem extends AbstractItem {
                     .setLegacyLore(List.of(contact.getNumber() + ""));
         } catch (MojangApiUtils.MojangApiException | IOException e) {
             return new ItemBuilder(Material.BARRIER)
-                    .setDisplayName("Error while loading contact");
+                    .setDisplayName(PhonePlugin.getInstance().getMessage("gui.error"));
         }
     }
 
@@ -49,11 +50,22 @@ public class ContactItem extends AbstractItem {
                         .withEscapeSequence("cancel")
                         .withFirstPrompt(conversation)
                         .withModality(false)
+                        .withLocalEcho(false)
                         .buildConversation(player)
                         .begin();
             }
             case RIGHT -> {
-                // Call the contact
+                Player target = Bukkit.getPlayer(contact.getOwner());
+
+                if (target == null) {
+                    player.sendMessage(PhonePlugin.getInstance().getMessage("player-not-found"));
+                    return;
+                }
+
+                PhonePlugin.getInstance().getCallManager().getPendingCalls().put(target, player);
+
+                player.sendMessage(PhonePlugin.getInstance().getMessage("calling").replace("%player%", target.getName()));
+                target.sendMessage(PhonePlugin.getInstance().getMessage("calling-other").replace("%player%", player.getName()));
             }
             case DROP -> {
                 PhonePlugin.getInstance().getDatabase().deleteContact(player.getUniqueId(), contact.getName());

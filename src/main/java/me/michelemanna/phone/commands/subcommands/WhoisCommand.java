@@ -9,17 +9,17 @@ public class WhoisCommand implements SubCommand {
     @Override
     public void execute(Player player, String[] args) {
         if (!player.hasPermission("phone.whois")) {
-            player.sendMessage("§cYou don't have permission to use this command!");
+            player.sendMessage(PhonePlugin.getInstance().getMessage("no-permission"));
             return;
         }
 
         if (args.length != 2) {
-            player.sendMessage("§cUsage: /phone whois <number>");
+            player.sendMessage(PhonePlugin.getInstance().getMessage("whois-usage"));
             return;
         }
 
         PhonePlugin.getInstance().getDatabase().getOwner(Long.parseLong(args[1])).thenAccept(owner -> {
-            player.sendMessage("§aThe owner of " + args[1] + " is: " + Bukkit.getOfflinePlayer(owner).getName());
+            player.sendMessage(PhonePlugin.getInstance().getMessage("whois").replace("%owner%", owner != null ? Bukkit.getOfflinePlayer(owner).getName() : "Unknown"));
         });
     }
 }

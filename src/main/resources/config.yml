@@ -1,4 +1,4 @@
-# This file is used to configure the database connection
+# Database configuration
 mysql:
   host: "localhost"
   port: 3306
@@ -6,3 +6,58 @@ mysql:
   password: "example"
   database: "phone"
   ssl: false
+
+# Messages configuration
+messages:
+  player-only: "&8» &cOnly players can use this command"
+
+  no-permission: "&8» &cYou don't have permission to use this command"
+
+  give-usage: "&8» &cUsage: /phone give <player>"
+  number-usage: "&8» &cUsage: /phone number <player>"
+
+  player-not-found: "&8» &cThe player is not online"
+
+  phone-given: "&8» &7You have given a phone to &e&n%player%"
+  phone-received: "&8» &7You have received a phone from &e&n%player%"
+  phone-number: "&8» &7Your phone number is &e&n%number%"
+
+  number-message: "&8» &7The phone number of &e&n%player%&7 is &e&n%number%"
+
+  regen-usage: "&8» &cUsage: /phone regen <player>"
+  phone-regenerated: "&8» &7You have regenerated the phone of &e&n%player%"
+
+  whois-usage: "&8» &cUsage: /phone whois <number>"
+  whois: "&8» &aThe phone number &e&n%number% &ais owned by &e%player%"
+
+  player-add-name: "&8» &7Enter the name of the contact you want to add:"
+  message-prompt: "&8» &7Send a message to the player:"
+
+  message-sent: "&8[&e%player% &7-> &aYou&8] &a%message%"
+  message-sent-self: "&8[&aYou &7-> &e%player%&8] &a%message%"
+
+  enter-number: "&8» &7Enter the phone number of the player:"
+  number-not-found: "&8» &cThe phone number is not registered"
+  contact-added: "&8» &7Contact added successfully."
+  invalid-number: "&8» &cInvalid phone number"
+  no-phone-number: "&8» &cYou don't have a phone number"
+  player-number: "&8» &7The phone number of &e&n%player%&7 is &e&n%number%"
+
+  no-pending-call: "&8» &cThere are no pending calls"
+  call-accepted: "&8» &aYou have accepted the call"
+  call-accepted-other: "&8» &a%player% has accepted the call"
+  calling: "&8» &aCalling &e%player%"
+  calling-other: "&8» &a%player% is calling you"
+
+  call-message: "&a%player% &8» &a%message%"
+  call-message-self: "&aYou &8» &a%message%"
+
+  gui:
+    accept-call: "&aAccept"
+    add-contact: "&aAdd contact"
+    next-page: "&aNext page &8(&e%page%&8/&e%max%&8)"
+    previous-page: "&aPrevious page &8(&e%page%&8/&e%max%&8)"
+    deny: "&cDeny"
+    close: "&cClose"
+    error: "&cAn error occurred while loading your contacts"
+    title: "&aPhone Menu"

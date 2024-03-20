@@ -29,7 +29,7 @@ public class PhoneCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("§cOnly players can use this command");
+            sender.sendMessage(PhonePlugin.getInstance().getMessage("player-only"));
             return true;
         }
 

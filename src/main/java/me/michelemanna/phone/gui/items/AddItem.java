@@ -15,8 +15,8 @@ import xyz.xenondevs.invui.item.impl.AbstractItem;
 public class AddItem extends AbstractItem {
     @Override
     public ItemProvider getItemProvider() {
-        return new ItemBuilder(Material.EMERALD)
-                .setDisplayName("Add Contact");
+        return new ItemBuilder(Material.STONE_BUTTON)
+                .setDisplayName(PhonePlugin.getInstance().getMessage("gui.add-contact"));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package me.michelemanna.phone.gui.items;
 
+import me.michelemanna.phone.PhonePlugin;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -29,6 +30,8 @@ public class ChangePageItem extends ControlItem<PagedGui<?>> {
     @Override
     public ItemProvider getItemProvider(PagedGui<?> gui) {
         return new ItemBuilder(next ? Material.GREEN_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE)
-                .setDisplayName("Current page: " + (gui.getCurrentPage() + 1));
+                .setDisplayName(PhonePlugin.getInstance().getMessage(next ? "gui.next-page" : "gui.previous-page")
+                        .replace("%page%", String.valueOf(gui.getCurrentPage() + 1))
+                        .replace("%max%", String.valueOf(gui.getPageAmount())));
     }
 }
