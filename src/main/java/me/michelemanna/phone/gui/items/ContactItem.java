@@ -42,34 +42,52 @@ public class ContactItem extends AbstractItem {
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent inventoryClickEvent) {
         player.closeInventory();
 
-        switch (clickType) {
-            case LEFT -> {
-                PlayerMessageConversation conversation = new PlayerMessageConversation(contact.getOwner());
+        PhonePlugin.getInstance().getDatabase().getLatestRenew(player.getUniqueId()).thenAccept(sim -> {
 
-                new ConversationFactory(PhonePlugin.getInstance())
-                        .withEscapeSequence("cancel")
-                        .withFirstPrompt(conversation)
-                        .withModality(false)
-                        .withLocalEcho(false)
-                        .buildConversation(player)
-                        .begin();
+            if (sim == null) {
+                player.sendMessage(PhonePlugin.getInstance().getMessage("gui.phone-not-renewed"));
+                return;
             }
-            case RIGHT -> {
-                Player target = Bukkit.getPlayer(contact.getOwner());
 
-                if (target == null) {
-                    player.sendMessage(PhonePlugin.getInstance().getMessage("player-not-found"));
-                    return;
+            if (System.currentTimeMillis() - sim.lastRenew() > 1000*60*60*24*30L) {
+                player.sendMessage(PhonePlugin.getInstance().getMessage("gui.phone-expired"));
+                return;
+            }
+
+            switch (clickType) {
+                case LEFT -> {
+                    if (sim.messages() < 1) {
+                        player.sendMessage(PhonePlugin.getInstance().getMessage("gui.no-messages"));
+                        return;
+                    }
+
+                    PlayerMessageConversation conversation = new PlayerMessageConversation(contact.getOwner());
+
+                    new ConversationFactory(PhonePlugin.getInstance())
+                            .withEscapeSequence("cancel")
+                            .withFirstPrompt(conversation)
+                            .withModality(false)
+                            .withLocalEcho(false)
+                            .buildConversation(player)
+                            .begin();
                 }
+                case RIGHT -> {
+                    Player target = Bukkit.getPlayer(contact.getOwner());
 
-                PhonePlugin.getInstance().getCallManager().getPendingCalls().put(target, player);
+                    if (target == null) {
+                        player.sendMessage(PhonePlugin.getInstance().getMessage("gui.player-not-found"));
+                        return;
+                    }
 
-                player.sendMessage(PhonePlugin.getInstance().getMessage("calling").replace("%player%", target.getName()));
-                target.sendMessage(PhonePlugin.getInstance().getMessage("calling-other").replace("%player%", player.getName()));
+                    PhonePlugin.getInstance().getCallManager().getPendingCalls().put(target, player);
+
+                    player.sendMessage(PhonePlugin.getInstance().getMessage("gui.calling").replace("%player%", target.getName()));
+                    target.sendMessage(PhonePlugin.getInstance().getMessage("gui.calling-other").replace("%player%", player.getName()));
+                }
+                case DROP -> {
+                    PhonePlugin.getInstance().getDatabase().deleteContact(player.getUniqueId(), contact.getName());
+                }
             }
-            case DROP -> {
-                PhonePlugin.getInstance().getDatabase().deleteContact(player.getUniqueId(), contact.getName());
-            }
-        }
+        });
     }
 }

@@ -11,7 +11,7 @@ public class PlayerAddConversation extends StringPrompt {
     @NotNull
     @Override
     public String getPromptText(@NotNull ConversationContext context) {
-        return PhonePlugin.getInstance().getMessage("player-add-name");
+        return PhonePlugin.getInstance().getMessage("conversations.player-add-name");
     }
 
     @Nullable

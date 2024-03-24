@@ -22,14 +22,15 @@ public class AcceptItem extends AbstractItem {
         Player playerTarget = PhonePlugin.getInstance().getCallManager().getPendingCalls().remove(player);
 
         if (playerTarget == null) {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("no-pending-call"));
+            player.sendMessage(PhonePlugin.getInstance().getMessage("gui.no-pending-call"));
             return;
         }
 
         PhonePlugin.getInstance().getCallManager().getCalls().put(player, playerTarget);
 
-        player.sendMessage(PhonePlugin.getInstance().getMessage("call-accepted"));
-        playerTarget.sendMessage(PhonePlugin.getInstance().getMessage("call-accepted-other")
+        player.sendMessage(PhonePlugin.getInstance().getMessage("gui.call-accepted"));
+
+        playerTarget.sendMessage(PhonePlugin.getInstance().getMessage("gui.call-accepted-other")
                 .replace("%player%", player.getName()));
     }
 }

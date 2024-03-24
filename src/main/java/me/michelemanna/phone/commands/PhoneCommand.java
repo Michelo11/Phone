@@ -1,10 +1,7 @@
 package me.michelemanna.phone.commands;
 
 import me.michelemanna.phone.PhonePlugin;
-import me.michelemanna.phone.commands.subcommands.GiveCommand;
-import me.michelemanna.phone.commands.subcommands.NumberCommand;
-import me.michelemanna.phone.commands.subcommands.RegenCommand;
-import me.michelemanna.phone.commands.subcommands.WhoisCommand;
+import me.michelemanna.phone.commands.subcommands.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,21 +12,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PhoneCommand implements CommandExecutor {
-    private final PhonePlugin plugin;
-    private Map<String, SubCommand> subCommands = new HashMap<>();
+    private final Map<String, SubCommand> subCommands = new HashMap<>();
 
     public PhoneCommand(PhonePlugin plugin) {
-        this.plugin = plugin;
         this.subCommands.put("give", new GiveCommand());
         this.subCommands.put("number", new NumberCommand());
         this.subCommands.put("regen", new RegenCommand());
         this.subCommands.put("whois", new WhoisCommand());
+        this.subCommands.put("renew", new RenewCommand());
+        this.subCommands.put("help", new HelpCommand());
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(PhonePlugin.getInstance().getMessage("player-only"));
+            sender.sendMessage(PhonePlugin.getInstance().getMessage("commands.player-only"));
             return true;
         }
 

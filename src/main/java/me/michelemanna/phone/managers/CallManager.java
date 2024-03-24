@@ -39,14 +39,15 @@ public class CallManager {
         Player target = getCall(player);
 
         if (target == null) {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("no-pending-call"));
+            player.sendMessage(PhonePlugin.getInstance().getMessage("listeners.no-pending-call"));
             return;
         }
 
-        target.sendMessage(PhonePlugin.getInstance().getMessage("call-message")
+        target.sendMessage(PhonePlugin.getInstance().getMessage("listeners.call-message")
                 .replace("%player%", player.getName())
                 .replace("%message%", message));
-        player.sendMessage(PhonePlugin.getInstance().getMessage("call-message-self")
+
+        player.sendMessage(PhonePlugin.getInstance().getMessage("listeners.call-message-self")
                 .replace("%player%", player.getName())
                 .replace("%message%", message));
     }

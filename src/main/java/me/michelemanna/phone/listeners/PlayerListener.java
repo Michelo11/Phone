@@ -55,12 +55,12 @@ public class PlayerListener implements Listener {
 
                 PhonePlugin.getInstance().getDatabase().getPhoneNumber(event.getPlayer().getUniqueId()).thenAccept(phoneNumber -> {
                     if (phoneNumber == null) {
-                        event.getPlayer().sendMessage(PhonePlugin.getInstance().getMessage("no-phone-number"));
+                        event.getPlayer().sendMessage(PhonePlugin.getInstance().getMessage("listeners.no-phone-number"));
                         return;
                     }
 
                     player.sendMessage(PhonePlugin.getInstance().getMessage(
-                            "player-number"
+                            "listeners.player-number"
                     ).replace("%player%", event.getPlayer().getName()).replace("%number%", String.valueOf(phoneNumber)));
                 });
             }

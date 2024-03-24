@@ -34,7 +34,7 @@ public final class PhonePlugin extends JavaPlugin {
     }
 
     public String getMessage(String path) {
-        return ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("messages." + path, "&cMessage not found"));
+        return ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("messages." + path, "&cMessage not found: " + path));
     }
 
     @Override

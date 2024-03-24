@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import me.michelemanna.phone.PhonePlugin;
 import me.michelemanna.phone.data.Contact;
+import me.michelemanna.phone.data.Sim;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -42,7 +43,9 @@ public class DatabaseManager {
                 "CREATE TABLE IF NOT EXISTS phoneNumbers(" +
                         "id INT PRIMARY KEY AUTO_INCREMENT," +
                         "number VARCHAR(10) NOT NULL," +
-                        "owner VARCHAR(36) NOT NULL" +
+                        "owner VARCHAR(36) NOT NULL," +
+                        "lastRenew LONG NOT NULL," +
+                        "messageCount INT NOT NULL DEFAULT 0" +
                         ")"
         );
 
@@ -88,10 +91,70 @@ public class DatabaseManager {
         Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
             try {
                 Connection connection = dataSource.getConnection();
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO phoneNumbers (number, owner) VALUES (?, ?)");
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO phoneNumbers (number, owner, lastRenew) VALUES (?, ?, ?)");
 
                 statement.setLong(1, phoneNumber);
                 statement.setString(2, owner.toString());
+                statement.setLong(3, System.currentTimeMillis());
+
+                statement.executeUpdate();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void renewPhoneNumber(UUID owner, int messages) {
+        Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
+            try {
+                Connection connection = dataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement("UPDATE phoneNumbers SET lastRenew = ?, messageCount = ? WHERE owner = ?");
+
+                statement.setLong(1, System.currentTimeMillis());
+                statement.setInt(2, messages);
+                statement.setString(3, owner.toString());
+
+                statement.executeUpdate();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public CompletableFuture<Sim> getLatestRenew(UUID owner) {
+        CompletableFuture<Sim> future = new CompletableFuture<>();
+
+        Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
+            try {
+                Connection connection = dataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement("SELECT lastRenew, messageCount FROM phoneNumbers WHERE owner = ?");
+
+                statement.setString(1, owner.toString());
+
+                statement.execute();
+                future.complete(statement.getResultSet().next() ? new Sim(statement.getResultSet().getInt("messageCount"), statement.getResultSet().getLong("lastRenew")) : null);
+
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+        return future;
+    }
+
+    public void decrementMessages(UUID owner) {
+        Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
+            try {
+                Connection connection = dataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement("UPDATE phoneNumbers SET messageCount = messageCount - 1 WHERE owner = ?");
+
+                statement.setString(1, owner.toString());
 
                 statement.executeUpdate();
                 statement.close();

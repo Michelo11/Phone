@@ -21,7 +21,7 @@ public class PlayerMessageConversation extends StringPrompt {
     @NotNull
     @Override
     public String getPromptText(@NotNull ConversationContext context) {
-        return PhonePlugin.getInstance().getMessage("message-prompt");
+        return PhonePlugin.getInstance().getMessage("conversations.message-prompt");
     }
 
     @Nullable
@@ -32,14 +32,17 @@ public class PlayerMessageConversation extends StringPrompt {
         Player player = Bukkit.getPlayer(owner);
 
         if (player == null) {
-            context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("player-not-online"));
+            context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("conversations.player-not-online"));
             return END_OF_CONVERSATION;
         }
 
-        player.sendMessage(PhonePlugin.getInstance().getMessage("message-sent")
+        PhonePlugin.getInstance().getDatabase().decrementMessages(((Player) context.getForWhom()).getUniqueId());
+
+        player.sendMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent")
                 .replace("%player%", ((Player) context.getForWhom()).getName())
                 .replace("%message%", input));
-        context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("message-sent-self")
+
+        context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent-self")
                 .replace("%player%", player.getName())
                 .replace("%message%", input));
         return END_OF_CONVERSATION;

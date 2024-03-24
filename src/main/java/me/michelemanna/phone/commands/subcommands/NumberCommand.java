@@ -9,24 +9,24 @@ public class NumberCommand implements SubCommand {
     @Override
     public void execute(Player player, String[] args) {
         if (!player.hasPermission("phone.number")) {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("no-permission"));
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.no-permission"));
             return;
         }
 
         if (args.length != 2) {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("number-usage"));
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.number-usage"));
             return;
         }
 
         Player target = Bukkit.getPlayer(args[1]);
 
         if (target == null) {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("player-not-found"));
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.player-not-found"));
             return;
         }
 
         PhonePlugin.getInstance().getDatabase().getPhoneNumber(target.getUniqueId()).thenAccept(number -> {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("number-message")
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.number-message")
                     .replace("%player%", target.getName())
                     .replace("%number%", String.valueOf(number)));
         });

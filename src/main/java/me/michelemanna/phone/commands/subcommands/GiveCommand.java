@@ -13,12 +13,12 @@ public class GiveCommand implements SubCommand {
     @Override
     public void execute(Player player, String[] args) {
         if (!player.hasPermission("phone.create")) {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("no-permission"));
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.no-permission"));
             return;
         }
 
         if (args.length != 2) {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("give-usage"));
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.give-usage"));
             return;
         }
 
@@ -30,7 +30,7 @@ public class GiveCommand implements SubCommand {
         Player target = Bukkit.getPlayer(args[1]);
 
         if (target == null) {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("player-not-found"));
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.player-not-found"));
             return;
         }
 
@@ -38,8 +38,12 @@ public class GiveCommand implements SubCommand {
         nbtItem.setString("phone_owner", target.getUniqueId().toString());
 
         target.getInventory().addItem(nbtItem.getItem());
-        player.sendMessage(PhonePlugin.getInstance().getMessage("phone-given").replace("%player%", target.getName()));
-        target.sendMessage(PhonePlugin.getInstance().getMessage("phone-received").replace("%player%", player.getName()));
+
+        player.sendMessage(PhonePlugin.getInstance().getMessage("commands.phone-given").replace("%player%", target.getName()));
+
+        if (!target.equals(player)) {
+            target.sendMessage(PhonePlugin.getInstance().getMessage("commands.phone-received").replace("%player%", player.getName()));
+        }
 
         PhonePlugin.getInstance().getDatabase().getPhoneNumber(target.getUniqueId()).thenAccept(number -> {
             if (number == null) {
@@ -48,7 +52,7 @@ public class GiveCommand implements SubCommand {
                 PhonePlugin.getInstance().getDatabase().createPhoneNumber(target.getUniqueId(), number);
             }
 
-            target.sendMessage(PhonePlugin.getInstance().getMessage("phone-number").replace("%number%", String.valueOf(number)));
+            target.sendMessage(PhonePlugin.getInstance().getMessage("commands.phone-number").replace("%number%", String.valueOf(number)));
         });
     }
 }

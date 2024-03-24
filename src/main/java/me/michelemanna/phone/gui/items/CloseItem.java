@@ -41,13 +41,15 @@ public class CloseItem extends AbstractItem {
                     .orElse(null);
 
             if (playerTarget == null) {
-                player.sendMessage("§cNo pending calls");
+                player.sendMessage(PhonePlugin.getInstance().getMessage("gui.no-pending-call"));
                 return;
             }
 
             callManager.getPendingCalls().remove(playerTarget);
-            player.sendMessage("§cYou denied the call");
-            playerTarget.sendMessage("§cThe player denied the call");
+
+            player.sendMessage(PhonePlugin.getInstance().getMessage("gui.deny-message"));
+
+            playerTarget.sendMessage(PhonePlugin.getInstance().getMessage("gui.deny-message"));
 
             return;
         }
@@ -59,11 +61,11 @@ public class CloseItem extends AbstractItem {
                 callManager.getCalls().remove(callManager.getCall(player));
             }
 
-            player.sendMessage("§cYou closed the call");
+            player.sendMessage(PhonePlugin.getInstance().getMessage("gui.close-message"));
 
             return;
         }
 
-        player.sendMessage("§cNo pending calls");
+        player.sendMessage(PhonePlugin.getInstance().getMessage("gui.no-pending-call"));
     }
 }

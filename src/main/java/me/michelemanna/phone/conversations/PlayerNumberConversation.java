@@ -15,7 +15,7 @@ public class PlayerNumberConversation extends StringPrompt {
     @NotNull
     @Override
     public String getPromptText(@NotNull ConversationContext context) {
-        return PhonePlugin.getInstance().getMessage("enter-number");
+        return PhonePlugin.getInstance().getMessage("conversations.enter-number");
     }
 
     @Nullable
@@ -30,14 +30,14 @@ public class PlayerNumberConversation extends StringPrompt {
                 UUID owner = PhonePlugin.getInstance().getDatabase().getOwner(Long.parseLong(input)).join();
 
                 if (owner == null) {
-                    context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("number-not-found"));
+                    context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("conversations.number-not-found"));
                     return;
                 }
 
                 PhonePlugin.getInstance().getDatabase().addContact(owner, ((Player) context.getForWhom()).getUniqueId(), name, Long.parseLong(input));
-                context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("contact-added"));
+                context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("conversations.contact-added"));
             } catch (NumberFormatException e) {
-                context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("invalid-number"));
+                context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("conversations.invalid-number"));
             }
         });
 
