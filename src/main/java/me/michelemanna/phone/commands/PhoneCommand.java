@@ -31,7 +31,7 @@ public class PhoneCommand implements CommandExecutor {
         }
 
         if (args.length == 0) {
-            player.sendMessage("§cYou must specify a subcommand");  // TODO: Add help message
+            subCommands.get("help").execute(player, args);
             return true;
         }
 
