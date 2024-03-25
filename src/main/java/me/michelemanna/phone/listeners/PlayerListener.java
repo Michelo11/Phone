@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
@@ -65,5 +66,14 @@ public class PlayerListener implements Listener {
                 });
             }
         }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        if (!PhonePlugin.getInstance().getConfig().getBoolean("resourcepack.enabled", true)) {
+            return;
+        }
+
+        event.getPlayer().setResourcePack(PhonePlugin.getInstance().getConfig().getString("resourcepack.url", "https://github.com/Michelo11/Phone/releases/download/v1.0/Custom.Phones.zip"));
     }
 }
