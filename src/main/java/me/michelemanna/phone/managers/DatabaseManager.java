@@ -6,6 +6,7 @@ import me.michelemanna.phone.PhonePlugin;
 import me.michelemanna.phone.data.Contact;
 import me.michelemanna.phone.data.Sim;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.sql.*;
@@ -57,6 +58,16 @@ public class DatabaseManager {
                         "player VARCHAR(36) NOT NULL," +
                         "owner VARCHAR(36) NOT NULL" +
                         ")"
+        );
+
+        statement.execute(
+                "CREATE TABLE IF NOT EXISTS repeaters(" +
+                        "id INT PRIMARY KEY AUTO_INCREMENT," +
+                        "x INT NOT NULL," +
+                        "y INT NOT NULL," +
+                        "z INT NOT NULL," +
+                        "world VARCHAR(36) NOT NULL" +
+                ")"
         );
 
         statement.close();
@@ -265,6 +276,74 @@ public class DatabaseManager {
 
                 statement.setString(1, owner.toString());
                 statement.setString(2, name);
+
+                statement.executeUpdate();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public CompletableFuture<List<Location>> getRepeaters() {
+        CompletableFuture<List<Location>> future = new CompletableFuture<>();
+
+        Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
+            try {
+                Connection connection = dataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement("SELECT * FROM repeaters");
+
+                ResultSet set = statement.executeQuery();
+                List<Location> locations = new ArrayList<>();
+
+                while (set.next()) {
+                    locations.add(new Location(Bukkit.getWorld(set.getString("world")), set.getInt("x"), set.getInt("y"), set.getInt("z")));
+                }
+
+                future.complete(locations);
+
+                set.close();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+        return future;
+    }
+
+    public void addRepeater(Location location) {
+        Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
+            try {
+                Connection connection = dataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO repeaters (x, y, z, world) VALUES (?, ?, ?, ?)");
+
+                statement.setInt(1, location.getBlockX());
+                statement.setInt(2, location.getBlockY());
+                statement.setInt(3, location.getBlockZ());
+                statement.setString(4, location.getWorld().getName());
+
+                statement.executeUpdate();
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void removeRepeater(Location location) {
+        Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
+            try {
+                Connection connection = dataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement("DELETE FROM repeaters WHERE x = ? AND y = ? AND z = ? AND world = ?");
+
+                statement.setInt(1, location.getBlockX());
+                statement.setInt(2, location.getBlockY());
+                statement.setInt(3, location.getBlockZ());
+                statement.setString(4, location.getWorld().getName());
 
                 statement.executeUpdate();
                 statement.close();

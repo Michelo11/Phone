@@ -54,6 +54,11 @@ public class ContactItem extends AbstractItem {
                 return;
             }
 
+            if (!PhonePlugin.getInstance().getRepeaterManager().isNear(player.getLocation())) {
+                player.sendMessage(PhonePlugin.getInstance().getMessage("gui.no-signal"));
+                return;
+            }
+
             switch (clickType) {
                 case LEFT -> {
                     if (sim.messages() < 1) {
