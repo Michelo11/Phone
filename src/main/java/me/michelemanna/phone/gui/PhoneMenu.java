@@ -26,7 +26,7 @@ public class PhoneMenu {
              PagedGui.Builder<Item> itemBuilder = PagedGui
                      .items()
                      .setStructure(
-                             "# # # # # # # # #",
+                             "# # # # s # # # #",
                              "# . . . . . . . #",
                              "# . . . . . . . #",
                              "# . . . . . . . #",
@@ -37,6 +37,7 @@ public class PhoneMenu {
                      .addIngredient('a', new AddItem())
                      .addIngredient('c', new AcceptItem())
                      .addIngredient('d', new CloseItem(player))
+                     .addIngredient('s', new SignalItem(player))
                      .addIngredient('<', new ChangePageItem(false))
                      .addIngredient('>', new ChangePageItem(true));
 

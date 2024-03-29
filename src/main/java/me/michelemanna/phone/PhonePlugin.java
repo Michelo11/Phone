@@ -23,6 +23,8 @@ public final class PhonePlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
         this.saveDefaultConfig();
+        this.getConfig().options().copyDefaults(true);
+        this.saveConfig();
 
         getCommand("phone").setExecutor(new PhoneCommand(this));
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);

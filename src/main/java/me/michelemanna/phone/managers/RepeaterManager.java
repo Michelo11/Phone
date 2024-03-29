@@ -4,6 +4,7 @@ import me.michelemanna.phone.PhonePlugin;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class RepeaterManager {
@@ -30,5 +31,12 @@ public class RepeaterManager {
     public boolean isNear(Location location) {
         return repeaters.stream()
                 .anyMatch(repeater -> repeater.getWorld().equals(location.getWorld()) && repeater.distance(location) <= PhonePlugin.getInstance().getConfig().getInt("repeater-distance", 30));
+    }
+
+    public Location getNearest(Location location) {
+        return repeaters.stream()
+                .filter(repeater -> repeater.getWorld().equals(location.getWorld()))
+                .min(Comparator.comparingDouble(repeater -> repeater.distance(location)))
+                .orElse(null);
     }
 }

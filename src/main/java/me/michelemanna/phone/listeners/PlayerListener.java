@@ -74,6 +74,6 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        event.getPlayer().setResourcePack(PhonePlugin.getInstance().getConfig().getString("resourcepack.url", "https://github.com/Michelo11/Phone/releases/download/v1.0/Custom.Phones.zip"));
+        event.getPlayer().setResourcePack(PhonePlugin.getInstance().getConfig().getString("resourcepack.url", "https://github.com/Michelo11/Phone/releases/download/v1.0/Custom.Phone.zip"));
     }
 }
