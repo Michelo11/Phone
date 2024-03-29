@@ -41,7 +41,7 @@ Welcome to the Phones Plugin repository, the right solution for introducing mode
   
 - Refer to the plugin's config.yml file for customizable messages.
 
-- Get your first phone with /phone give <player>.
+- Get your first phone with /phone give command.
 
 ## Features
 
@@ -52,6 +52,8 @@ Welcome to the Phones Plugin repository, the right solution for introducing mode
 - Share Number: Share your phone number just by right clicking on the target player.
 
 - Subscriptions: Create a subscription and limit user messages per month and let them renew their monthly amount.
+
+- Repeaters: Make sure to stay near a repeater pylon with an amazing texture to make a call or send a message.
 
 ## Contributing
 
