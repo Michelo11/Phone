@@ -16,6 +16,7 @@ public class HelpCommand implements SubCommand {
         player.sendMessage(color("&f/phone regen <player> &8»&f Generate a new phone number"));
         player.sendMessage(color("&f/phone renew <player> <messages> &8»&f Renew the phone subscription"));
         player.sendMessage(color("&f/phone whois <number> &8»&f Check who is the owner of a number"));
+        player.sendMessage(color("&f/phone repeater &8»&f Get a repeater item"));
         player.sendMessage(color("&6&m-------&f&m-------&6&m-------&f&m-------&6&m-------&f&m-------"));
     }
 
