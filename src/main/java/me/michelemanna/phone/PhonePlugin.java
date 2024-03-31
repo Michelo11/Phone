@@ -1,7 +1,9 @@
 package me.michelemanna.phone;
 
 import me.michelemanna.phone.commands.PhoneCommand;
+import me.michelemanna.phone.gui.PhoneMenu;
 import me.michelemanna.phone.listeners.CallListener;
+import me.michelemanna.phone.listeners.InventoryListener;
 import me.michelemanna.phone.listeners.PlayerListener;
 import me.michelemanna.phone.listeners.RepeaterListener;
 import me.michelemanna.phone.managers.CallManager;
@@ -30,6 +32,7 @@ public final class PhonePlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         getServer().getPluginManager().registerEvents(new CallListener(), this);
         getServer().getPluginManager().registerEvents(new RepeaterListener(), this);
+        getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 
         try {
             this.database = new DatabaseManager(this);
@@ -48,6 +51,7 @@ public final class PhonePlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        PhoneMenu.closeAll();
         this.database.close();
     }
 

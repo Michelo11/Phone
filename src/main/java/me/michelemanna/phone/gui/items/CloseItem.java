@@ -22,12 +22,13 @@ public class CloseItem extends AbstractItem {
 
     @Override
     public ItemProvider getItemProvider() {
-        return new ItemBuilder(Material.REDSTONE)
+        return new ItemBuilder(Material.MAP)
                 .setDisplayName(
                         PhonePlugin.getInstance().getMessage(
                                 PhonePlugin.getInstance().getCallManager().getPendingCalls().containsKey(player) ? "gui.deny" : "gui.close"
                         )
-                );
+                )
+                .setCustomModelData(1010);
     }
 
     @Override

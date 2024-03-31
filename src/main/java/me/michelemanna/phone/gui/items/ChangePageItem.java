@@ -1,6 +1,7 @@
 package me.michelemanna.phone.gui.items;
 
 import me.michelemanna.phone.PhonePlugin;
+import me.michelemanna.phone.gui.PhoneMenu;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -9,29 +10,33 @@ import org.jetbrains.annotations.NotNull;
 import xyz.xenondevs.invui.gui.PagedGui;
 import xyz.xenondevs.invui.item.ItemProvider;
 import xyz.xenondevs.invui.item.builder.ItemBuilder;
+import xyz.xenondevs.invui.item.impl.AbstractItem;
 import xyz.xenondevs.invui.item.impl.controlitem.ControlItem;
 
-public class ChangePageItem extends ControlItem<PagedGui<?>> {
+public class ChangePageItem extends AbstractItem {
     private final boolean next;
+    private final PhoneMenu menu;
 
-    public ChangePageItem(boolean next) {
+    public ChangePageItem(boolean next, PhoneMenu menu) {
         this.next = next;
+        this.menu = menu;
     }
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent event) {
         if (next) {
-            getGui().goForward();
+            menu.next(player);
         } else {
-            getGui().goBack();
+            menu.previous(player);
         }
     }
 
     @Override
-    public ItemProvider getItemProvider(PagedGui<?> gui) {
-        return new ItemBuilder(next ? Material.GREEN_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE)
+    public ItemProvider getItemProvider() {
+        return new ItemBuilder(Material.MAP)
                 .setDisplayName(PhonePlugin.getInstance().getMessage(next ? "gui.next-page" : "gui.previous-page")
-                        .replace("%page%", String.valueOf(gui.getCurrentPage() + 1))
-                        .replace("%max%", String.valueOf(gui.getPageAmount())));
+                        .replace("%page%", String.valueOf(menu.getCurrentPage() + 1))
+                        .replace("%max%", String.valueOf(menu.getPageAmount())))
+                .setCustomModelData(1010);
     }
 }

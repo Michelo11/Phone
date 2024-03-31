@@ -13,8 +13,9 @@ import xyz.xenondevs.invui.item.impl.AbstractItem;
 public class AcceptItem extends AbstractItem {
     @Override
     public ItemProvider getItemProvider() {
-        return new ItemBuilder(Material.EMERALD)
-                .setDisplayName(PhonePlugin.getInstance().getMessage("gui.accept-call"));
+        return new ItemBuilder(Material.MAP)
+                .setDisplayName(PhonePlugin.getInstance().getMessage("gui.accept-call"))
+                .setCustomModelData(1010);
     }
 
     @Override

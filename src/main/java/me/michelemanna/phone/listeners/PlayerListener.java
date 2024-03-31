@@ -34,7 +34,18 @@ public class PlayerListener implements Listener {
             String owner = nbtItem.getString("phone_owner");
             event.setCancelled(true);
 
-            PhoneMenu.openPhone(event.getPlayer(), UUID.fromString(owner));
+            PhonePlugin.getInstance().getDatabase().getContacts(UUID.fromString(owner)).thenAccept(contacts -> {
+                try {
+                if (contacts == null) {
+                    event.getPlayer().sendMessage(PhonePlugin.getInstance().getMessage("gui.error"));
+                    return;
+                }
+
+                new PhoneMenu(contacts).open(event.getPlayer());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         }
     }
 
