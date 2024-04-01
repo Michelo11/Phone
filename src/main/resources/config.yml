@@ -1,11 +1,12 @@
 # Database configuration
 mysql:
+  type: "sqlite"
   host: "localhost"
   port: 3306
   username: "root"
   password: "example"
   database: "phone"
-  ssl: false
+  ssl: false 100
 
 # Plugin configuration
 resourcepack:
@@ -40,6 +41,8 @@ messages:
     whois: "&8» &aThe phone number &e&n%number% &ais owned by &e%player%"
 
     repeater-given: "&8» &7You have received a repeater"
+    repeater-usage: "&8» &cUsage: /phone repeater <speed> <range>"
+    invalid-arguments: "&8» &cInvalid argument"
 
   conversations:
     player-add-name: "&8» &7Enter the name of the contact you want to add:"
@@ -94,3 +97,5 @@ messages:
     no-pending-call: "&8» &cThere are no pending calls"
     call-message: "&a%player% &8» &a%message%"
     call-message-self: "&aYou &8» &a%message%"
+
+    no-signal: "&8» &cNo signal"

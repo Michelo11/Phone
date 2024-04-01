@@ -1,6 +1,7 @@
 package me.michelemanna.phone.conversations;
 
 import me.michelemanna.phone.PhonePlugin;
+import me.michelemanna.phone.data.Repeater;
 import org.bukkit.Bukkit;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
@@ -38,13 +39,24 @@ public class PlayerMessageConversation extends StringPrompt {
 
         PhonePlugin.getInstance().getDatabase().decrementMessages(((Player) context.getForWhom()).getUniqueId());
 
-        player.sendMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent")
-                .replace("%player%", ((Player) context.getForWhom()).getName())
-                .replace("%message%", input));
+        Repeater nearestRepeater = PhonePlugin.getInstance().getRepeaterManager().getNearest(player.getLocation());
 
-        context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent-self")
-                .replace("%player%", player.getName())
-                .replace("%message%", input));
+        if (nearestRepeater == null || nearestRepeater.range() < player.getLocation().distance(nearestRepeater.location())) {
+            context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("conversations.no-signal"));
+            return END_OF_CONVERSATION;
+        }
+
+        double delay = nearestRepeater.speed() * 0.1 + player.getLocation().distance(nearestRepeater.location());
+
+        Bukkit.getScheduler().runTaskLater(PhonePlugin.getInstance(), () -> {
+            player.sendMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent")
+                    .replace("%player%", ((Player) context.getForWhom()).getName())
+                    .replace("%message%", input));
+
+            context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent-self")
+                    .replace("%player%", player.getName())
+                    .replace("%message%", input));
+        }, (long) (delay));
         return END_OF_CONVERSATION;
     }
 }

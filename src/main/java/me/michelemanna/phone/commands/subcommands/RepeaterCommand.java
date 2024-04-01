@@ -16,6 +16,21 @@ public class RepeaterCommand implements SubCommand {
             return;
         }
 
+        if (args.length != 3) {
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.repeater-usage"));
+            return;
+        }
+
+        int speed, range;
+
+        try {
+            speed = Integer.parseInt(args[1]);
+            range = Integer.parseInt(args[2]);
+        } catch (NumberFormatException e) {
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.invalid-arguments"));
+            return;
+        }
+
         ItemStack repeater = new ItemBuilder(Material.IRON_BLOCK)
                 .setDisplayName("§bRepeater")
                 .setCustomModelData(1)
@@ -24,6 +39,8 @@ public class RepeaterCommand implements SubCommand {
 
         NBTItem nbtItem = new NBTItem(repeater);
         nbtItem.setBoolean("repeater", true);
+        nbtItem.setInteger("speed", speed);
+        nbtItem.setInteger("range", range);
 
         player.getInventory().addItem(nbtItem.getItem());
 

@@ -2,6 +2,7 @@ package me.michelemanna.phone.gui;
 
 import me.michelemanna.phone.PhonePlugin;
 import me.michelemanna.phone.data.Contact;
+import me.michelemanna.phone.data.Repeater;
 import me.michelemanna.phone.gui.items.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -101,19 +102,25 @@ public class PhoneMenu implements InventoryHolder {
     }
 
     public ItemStack getSignalItem(Player player) {
-        double repeaterRange = PhonePlugin.getInstance().getConfig().getDouble("repeater-distance");
-        Location nearest = PhonePlugin.getInstance()
+        Repeater nearest = PhonePlugin.getInstance()
                 .getRepeaterManager()
                 .getNearest(player.getLocation());
 
-        double distance = nearest == null ? repeaterRange + 10 : nearest.distance(player.getLocation());
+        if (nearest == null) {
+            return new ItemBuilder(Material.MAP)
+                    .setDisplayName(PhonePlugin.getInstance().getMessage("gui.signal.none"))
+                    .setCustomModelData(1011)
+                    .get();
+        }
 
-        if (distance <= repeaterRange * 0.3) {
+        double distance = nearest.location().distance(player.getLocation());
+
+        if (distance <= nearest.range() * 0.3) {
             return new ItemBuilder(Material.MAP)
                     .setDisplayName(PhonePlugin.getInstance().getMessage("gui.signal.full"))
                     .setCustomModelData(1013)
                     .get();
-        } else if (distance <= repeaterRange) {
+        } else if (distance <= nearest.range()) {
             return new ItemBuilder(Material.MAP)
                     .setDisplayName(PhonePlugin.getInstance().getMessage("gui.signal.half"))
                     .setCustomModelData(1012)

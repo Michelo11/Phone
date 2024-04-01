@@ -1,6 +1,8 @@
 package me.michelemanna.phone.managers;
 
 import me.michelemanna.phone.PhonePlugin;
+import me.michelemanna.phone.data.Repeater;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -43,12 +45,23 @@ public class CallManager {
             return;
         }
 
-        target.sendMessage(PhonePlugin.getInstance().getMessage("listeners.call-message")
-                .replace("%player%", player.getName())
-                .replace("%message%", message));
+        Repeater nearestRepeater = PhonePlugin.getInstance().getRepeaterManager().getNearest(player.getLocation());
 
-        player.sendMessage(PhonePlugin.getInstance().getMessage("listeners.call-message-self")
-                .replace("%player%", player.getName())
-                .replace("%message%", message));
+        if (nearestRepeater == null || nearestRepeater.range() < player.getLocation().distance(nearestRepeater.location())) {
+            player.sendMessage(PhonePlugin.getInstance().getMessage("listeners.no-signal"));
+            return;
+        }
+
+        double delay = nearestRepeater.speed() * 0.1 + player.getLocation().distance(nearestRepeater.location());
+
+        Bukkit.getScheduler().runTaskLater(PhonePlugin.getInstance(), () -> {
+            target.sendMessage(PhonePlugin.getInstance().getMessage("listeners.call-message")
+                    .replace("%player%", player.getName())
+                    .replace("%message%", message));
+
+            player.sendMessage(PhonePlugin.getInstance().getMessage("listeners.call-message-self")
+                    .replace("%player%", player.getName())
+                    .replace("%message%", message));
+        }, (long) (delay));
     }
 }
