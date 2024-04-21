@@ -44,6 +44,16 @@ messages:
     repeater-usage: "&8» &cUsage: /phone repeater <speed> <range>"
     invalid-arguments: "&8» &cInvalid argument"
 
+    message-usage: "&8» &cUsage: /phone message <number> <message>"
+
+    call-usage: "&8» &cUsage: /phone call <number>"
+
+    add-usage: "&8» &cUsage: /phone add <number> <name>"
+
+    remove-usage: "&8» &cUsage: /phone remove <name>"
+    contact-removed: "&8» &7Contact removed successfully."
+
+
   conversations:
     player-add-name: "&8» &7Enter the name of the contact you want to add:"
 
@@ -51,6 +61,7 @@ messages:
     player-not-online: "&8» &cThe player is not online"
     message-sent: "&8[&e%player% &7-> &aYou&8] &a%message%"
     message-sent-self: "&8[&aYou &7-> &e%player%&8] &a%message%"
+    no-signal: "&8» &cNo signal for you or the opponent"
 
     enter-number: "&8» &7Enter the phone number of the player:"
     number-not-found: "&8» &cThe phone number is not registered"

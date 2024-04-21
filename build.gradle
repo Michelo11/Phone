@@ -20,6 +20,9 @@ repositories {
         url = "https://repo.xenondevs.xyz/releases"
     }
     maven {
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+    maven {
         name = "CodeMC"
         url = "https://repo.codemc.io/repository/maven-public/"
     }
@@ -27,9 +30,10 @@ repositories {
 
 dependencies {
     compileOnly "org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT"
+    compileOnly "me.clip:placeholderapi:2.11.5"
     implementation "com.zaxxer:HikariCP:5.1.0"
     implementation "xyz.xenondevs.invui:invui:1.26"
-    implementation("de.tr7zw:item-nbt-api:2.12.2")
+    implementation "de.tr7zw:item-nbt-api:2.12.2"
 }
 
 shadowJar {

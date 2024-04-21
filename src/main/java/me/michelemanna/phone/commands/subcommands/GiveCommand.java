@@ -50,6 +50,8 @@ public class GiveCommand implements SubCommand {
                 number = (long) (Math.random() * 10000000000L);
 
                 PhonePlugin.getInstance().getDatabase().createPhoneNumber(target.getUniqueId(), number);
+
+                PhonePlugin.getInstance().getDatabase().getNumbersCache().put(target.getUniqueId(), number);
             }
 
             target.sendMessage(PhonePlugin.getInstance().getMessage("commands.phone-number").replace("%number%", String.valueOf(number)));

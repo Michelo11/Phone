@@ -17,6 +17,8 @@ import java.util.concurrent.CompletableFuture;
 public class DatabaseManager {
     private final ConnectionProvider provider;
 
+    private final Map<UUID, Long> numbersCache = new HashMap<>();
+
     public DatabaseManager(PhonePlugin plugin) throws SQLException, ClassNotFoundException {
         String type = plugin.getConfig().getString("mysql.type", "sqlite");
 
@@ -310,6 +312,32 @@ public class DatabaseManager {
                 e.printStackTrace();
             }
         });
+    }
+
+    public void loadNumber(UUID owner) {
+        Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
+            try {
+                Connection connection = provider.getConnection();
+                PreparedStatement statement = connection.prepareStatement("SELECT number FROM phoneNumbers WHERE owner = ?");
+
+                statement.setString(1, owner.toString());
+
+                ResultSet set = statement.executeQuery();
+                if (set.next()) {
+                    numbersCache.put(owner, set.getLong("number"));
+                }
+
+                set.close();
+                statement.close();
+                provider.closeConnection(connection);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public Map<UUID, Long> getNumbersCache() {
+        return numbersCache;
     }
 
     public void close() {

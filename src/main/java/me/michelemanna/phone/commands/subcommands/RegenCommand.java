@@ -28,6 +28,8 @@ public class RegenCommand implements SubCommand {
 
         PhonePlugin.getInstance().getDatabase().updatePhoneNumber(target.getUniqueId(), regenNumber);
 
+        PhonePlugin.getInstance().getDatabase().getNumbersCache().put(target.getUniqueId(), regenNumber);
+
         player.sendMessage(PhonePlugin.getInstance().getMessage("commands.phone-regenerated").replace("%player%", args[1]));
     }
 }

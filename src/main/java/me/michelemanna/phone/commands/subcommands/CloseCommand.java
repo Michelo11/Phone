@@ -1,38 +1,20 @@
-package me.michelemanna.phone.gui.items;
+package me.michelemanna.phone.commands.subcommands;
 
 import me.michelemanna.phone.PhonePlugin;
+import me.michelemanna.phone.commands.SubCommand;
 import me.michelemanna.phone.managers.CallManager;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.jetbrains.annotations.NotNull;
-import xyz.xenondevs.invui.item.ItemProvider;
-import xyz.xenondevs.invui.item.builder.ItemBuilder;
-import xyz.xenondevs.invui.item.impl.AbstractItem;
 
 import java.util.Map;
 
-public class CloseItem extends AbstractItem {
-    private final Player player;
-
-    public CloseItem(Player player) {
-        this.player = player;
-    }
-
+public class CloseCommand implements SubCommand {
     @Override
-    public ItemProvider getItemProvider() {
-        return new ItemBuilder(Material.MAP)
-                .setDisplayName(
-                        PhonePlugin.getInstance().getMessage(
-                                PhonePlugin.getInstance().getCallManager().getPendingCalls().containsKey(player) ? "gui.deny" : "gui.close"
-                        )
-                )
-                .setCustomModelData(1010);
-    }
+    public void execute(Player player, String[] args) {
+        if (!player.hasPermission("phone.deny")) {
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.no-permission"));
+            return;
+        }
 
-    @Override
-    public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent inventoryClickEvent) {
         CallManager callManager = PhonePlugin.getInstance().getCallManager();
 
         if (callManager.getPendingCalls().containsValue(player)) {

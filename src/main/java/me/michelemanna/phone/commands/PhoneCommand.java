@@ -21,7 +21,13 @@ public class PhoneCommand implements CommandExecutor {
         this.subCommands.put("whois", new WhoisCommand());
         this.subCommands.put("renew", new RenewCommand());
         this.subCommands.put("repeater", new RepeaterCommand());
+        this.subCommands.put("message", new MessageCommand());
+        this.subCommands.put("call", new CallCommand());
+        this.subCommands.put("accept", new AcceptCommand());
+        this.subCommands.put("close", new CloseCommand());
         this.subCommands.put("help", new HelpCommand());
+        this.subCommands.put("add", new AddCommand());
+        this.subCommands.put("remove", new RemoveCommand());
     }
 
     @Override

@@ -81,6 +81,8 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        PhonePlugin.getInstance().getDatabase().loadNumber(event.getPlayer().getUniqueId());
+
         if (!PhonePlugin.getInstance().getConfig().getBoolean("resourcepack.enabled", true)) {
             return;
         }

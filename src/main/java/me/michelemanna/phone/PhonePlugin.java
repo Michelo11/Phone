@@ -2,6 +2,7 @@ package me.michelemanna.phone;
 
 import me.michelemanna.phone.commands.PhoneCommand;
 import me.michelemanna.phone.gui.PhoneMenu;
+import me.michelemanna.phone.hooks.PhonePlaceholder;
 import me.michelemanna.phone.listeners.CallListener;
 import me.michelemanna.phone.listeners.InventoryListener;
 import me.michelemanna.phone.listeners.PlayerListener;
@@ -9,6 +10,7 @@ import me.michelemanna.phone.listeners.RepeaterListener;
 import me.michelemanna.phone.managers.CallManager;
 import me.michelemanna.phone.managers.DatabaseManager;
 import me.michelemanna.phone.managers.RepeaterManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -33,6 +35,10 @@ public final class PhonePlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new CallListener(), this);
         getServer().getPluginManager().registerEvents(new RepeaterListener(), this);
         getServer().getPluginManager().registerEvents(new InventoryListener(), this);
+
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PhonePlaceholder().register();
+        }
 
         try {
             this.database = new DatabaseManager(this);
