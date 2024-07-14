@@ -50,18 +50,18 @@ public class RepeaterListener implements Listener {
 
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof ArmorStand armorStand)) {
+        if (!(event.getEntity() instanceof ArmorStand)) {
             return;
         }
 
-        if (armorStand.getCustomName() == null || !armorStand.getCustomName().equals("Pylon")) {
+        if (event.getEntity().getCustomName() == null || !event.getEntity().getCustomName().equals("Pylon")) {
             return;
         }
 
         event.setCancelled(true);
 
         if (event.getDamager().hasPermission("phone.repeater.remove")) {
-            armorStand.remove();
+            event.getEntity().remove();
 
             Location location = event.getEntity().getLocation().getBlock().getLocation();
 
@@ -87,8 +87,8 @@ public class RepeaterListener implements Listener {
             PhonePlugin.getInstance().getRepeaterManager().removeRepeater(nearest.location());
 
             nearest.location().getWorld().getNearbyEntities(nearest.location(), 1, 1, 1).forEach(entity -> {
-                if (entity instanceof ArmorStand armorStand) {
-                    armorStand.remove();
+                if (entity instanceof ArmorStand) {
+                    entity.remove();
                 }
             });
 

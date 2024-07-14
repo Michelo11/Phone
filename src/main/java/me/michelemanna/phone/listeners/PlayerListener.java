@@ -53,7 +53,7 @@ public class PlayerListener implements Listener {
     public void onInteract(PlayerInteractAtEntityEvent event) {
         Entity entity = event.getRightClicked();
 
-        if (entity instanceof Player player) {
+        if (entity instanceof Player) {
             ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
 
             if (item.getType() == Material.PRISMARINE_SHARD) {
@@ -71,7 +71,7 @@ public class PlayerListener implements Listener {
                         return;
                     }
 
-                    player.sendMessage(PhonePlugin.getInstance().getMessage(
+                    entity.sendMessage(PhonePlugin.getInstance().getMessage(
                             "listeners.player-number"
                     ).replace("%player%", event.getPlayer().getName()).replace("%number%", String.valueOf(phoneNumber)));
                 });

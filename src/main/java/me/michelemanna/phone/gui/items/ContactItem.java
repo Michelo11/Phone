@@ -17,7 +17,7 @@ import xyz.xenondevs.invui.item.impl.AbstractItem;
 import xyz.xenondevs.invui.util.MojangApiUtils;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Collections;
 
 public class ContactItem extends AbstractItem {
     private final Contact contact;
@@ -31,7 +31,7 @@ public class ContactItem extends AbstractItem {
         try {
             return new SkullBuilder(contact.getOwner())
                     .setDisplayName(contact.getName())
-                    .setLegacyLore(List.of(contact.getNumber() + ""));
+                    .setLegacyLore(Collections.singletonList(contact.getNumber() + ""));
         } catch (MojangApiUtils.MojangApiException | IOException e) {
             return new ItemBuilder(Material.BARRIER)
                     .setDisplayName(PhonePlugin.getInstance().getMessage("gui.error"));
@@ -60,7 +60,7 @@ public class ContactItem extends AbstractItem {
             }
 
             switch (clickType) {
-                case LEFT -> {
+                case LEFT:
                     if (sim.messages() < 1) {
                         player.sendMessage(PhonePlugin.getInstance().getMessage("gui.no-messages"));
                         return;
@@ -75,8 +75,8 @@ public class ContactItem extends AbstractItem {
                             .withLocalEcho(false)
                             .buildConversation(player)
                             .begin();
-                }
-                case RIGHT -> {
+                    break;
+                case RIGHT:
                     Player target = Bukkit.getPlayer(contact.getOwner());
 
                     if (target == null) {
@@ -88,10 +88,10 @@ public class ContactItem extends AbstractItem {
 
                     player.sendMessage(PhonePlugin.getInstance().getMessage("gui.calling").replace("%player%", target.getName()));
                     target.sendMessage(PhonePlugin.getInstance().getMessage("gui.calling-other").replace("%player%", player.getName()));
-                }
-                case DROP -> {
+                    break;
+                case DROP:
                     PhonePlugin.getInstance().getDatabase().deleteContact(player.getUniqueId(), contact.getName());
-                }
+                    break;
             }
         });
     }

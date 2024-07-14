@@ -5,7 +5,6 @@ import me.michelemanna.phone.data.Contact;
 import me.michelemanna.phone.data.Repeater;
 import me.michelemanna.phone.gui.items.*;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -14,15 +13,10 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.jetbrains.annotations.NotNull;
-import xyz.xenondevs.invui.gui.PagedGui;
-import xyz.xenondevs.invui.gui.structure.Markers;
-import xyz.xenondevs.invui.item.Item;
 import xyz.xenondevs.invui.item.builder.ItemBuilder;
 import xyz.xenondevs.invui.item.impl.AbstractItem;
-import xyz.xenondevs.invui.window.Window;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class PhoneMenu implements InventoryHolder {
@@ -83,15 +77,17 @@ public class PhoneMenu implements InventoryHolder {
 
         items.put(125, new CloseItem(player));
 
-        items.forEach((slot, item) -> {
-            Inventory inv = inventory;
+        Bukkit.getScheduler().runTask(PhonePlugin.getInstance(), () -> {
+            items.forEach((slot, item) -> {
+                Inventory inv = inventory;
 
-            if (slot >= 100) {
-                inv = playerInventory;
-                slot -= 100;
-            }
+                if (slot >= 100) {
+                    inv = playerInventory;
+                    slot -= 100;
+                }
 
-            inv.setItem(slot, item.getItemProvider().get());
+                inv.setItem(slot, item.getItemProvider().get());
+            });
         });
     }
 

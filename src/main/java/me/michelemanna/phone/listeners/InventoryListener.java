@@ -17,13 +17,13 @@ public class InventoryListener implements Listener {
     public void onClick(InventoryClickEvent event) {
         InventoryHolder holder = event.getWhoClicked().getOpenInventory().getTopInventory().getHolder();
 
-        if (!(holder instanceof PhoneMenu menu)) {
+        if (!(holder instanceof PhoneMenu)) {
             return;
         }
 
         event.setCancelled(true);
 
-        menu.handleClick(event);
+        ((PhoneMenu) holder).handleClick(event);
     }
 
     @EventHandler
@@ -31,7 +31,7 @@ public class InventoryListener implements Listener {
         Player player = (Player) event.getPlayer();
         InventoryHolder holder = event.getInventory().getHolder();
 
-        if (!(holder instanceof PhoneMenu menu)) {
+        if (!(holder instanceof PhoneMenu)) {
             return;
         }
 
@@ -57,11 +57,11 @@ public class InventoryListener implements Listener {
 
     @EventHandler
     public void onPickup(EntityPickupItemEvent event) {
-        if (!(event.getEntity() instanceof Player player)) {
+        if (!(event.getEntity() instanceof Player)) {
             return;
         }
 
-        InventoryHolder holder = player.getOpenInventory().getTopInventory().getHolder();
+        InventoryHolder holder = ((Player) event.getEntity()).getOpenInventory().getTopInventory().getHolder();
         if (holder instanceof PhoneMenu) {
             event.setCancelled(true);
         }
