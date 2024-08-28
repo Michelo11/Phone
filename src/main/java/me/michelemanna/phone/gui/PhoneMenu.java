@@ -31,11 +31,13 @@ public class PhoneMenu implements InventoryHolder {
     }
 
     public void open(Player player) {
-        INVENTORIES.put(player, player.getInventory().getContents());
+        Bukkit.getScheduler().runTask(PhonePlugin.getInstance(), () -> {
+            INVENTORIES.put(player, player.getInventory().getContents());
 
-        redraw(player);
+            redraw(player);
 
-        Bukkit.getScheduler().runTask(PhonePlugin.getInstance(), () -> player.openInventory(inventory));
+            player.openInventory(inventory);
+        });
     }
 
     public void redraw(Player player) {
