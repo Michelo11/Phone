@@ -1,6 +1,6 @@
 package me.michelemanna.phone.listeners;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NBT;
 import me.michelemanna.phone.PhonePlugin;
 import me.michelemanna.phone.gui.PhoneMenu;
 import org.bukkit.Material;
@@ -25,16 +25,15 @@ public class PlayerListener implements Listener {
         }
 
         if (item.getType() == Material.PRISMARINE_SHARD) {
-            NBTItem nbtItem = new NBTItem(item);
+            String phoneOwner = NBT.get(item, nbt -> {
+                return nbt.getString("phone_owner");
+            });
 
-            if (!nbtItem.hasTag("phone_owner")) {
-                return;
-            }
+            if (phoneOwner == null) return;
 
-            String owner = nbtItem.getString("phone_owner");
             event.setCancelled(true);
 
-            PhonePlugin.getInstance().getDatabase().getContacts(UUID.fromString(owner)).thenAccept(contacts -> {
+            PhonePlugin.getInstance().getDatabase().getContacts(UUID.fromString(phoneOwner)).thenAccept(contacts -> {
                 try {
                 if (contacts == null) {
                     event.getPlayer().sendMessage(PhonePlugin.getInstance().getMessage("gui.error"));
@@ -57,11 +56,11 @@ public class PlayerListener implements Listener {
             ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
 
             if (item.getType() == Material.PRISMARINE_SHARD) {
-                NBTItem nbtItem = new NBTItem(item);
+                String phoneOwner = NBT.get(item, nbt -> {
+                    return nbt.getString("phone_owner");
+                });
 
-                if (!nbtItem.hasTag("phone_owner")) {
-                    return;
-                }
+                if (phoneOwner == null) return;
 
                 event.setCancelled(true);
 

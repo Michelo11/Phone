@@ -31,6 +31,7 @@ public class PhoneCommand implements TabExecutor {
         this.subCommands.put("help", new HelpCommand());
         this.subCommands.put("add", new AddCommand());
         this.subCommands.put("remove", new RemoveCommand());
+        this.subCommands.put("menu", new MenuCommand());
     }
 
     @Override

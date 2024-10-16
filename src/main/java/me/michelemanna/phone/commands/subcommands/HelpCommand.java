@@ -12,6 +12,7 @@ public class HelpCommand implements SubCommand {
         player.sendMessage(color("&r   &fRunning &6Phones&f by &6Michelo11"));
         player.sendMessage(color("&r"));
         player.sendMessage(color("&f/phone give <player> &8»&f Give a phone to a player"));
+        player.sendMessage(color("&f/phone menu &8»&f Open the phone menu"));
         player.sendMessage(color("&f/phone number <player> &8»&f Retrieve a player's phone number"));
         player.sendMessage(color("&f/phone regen <player> &8»&f Generate a new phone number"));
         player.sendMessage(color("&f/phone renew <player> <messages> &8»&f Renew the phone subscription"));

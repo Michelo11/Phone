@@ -6,7 +6,7 @@ mysql:
   username: "root"
   password: "example"
   database: "phone"
-  ssl: false 100
+  ssl: false
 
 # Plugin configuration
 resourcepack:

@@ -1,6 +1,6 @@
 package me.michelemanna.phone.commands.subcommands;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NBT;
 import me.michelemanna.phone.PhonePlugin;
 import me.michelemanna.phone.commands.SubCommand;
 import org.bukkit.Bukkit;
@@ -34,10 +34,11 @@ public class GiveCommand implements SubCommand {
             return;
         }
 
-        NBTItem nbtItem = new NBTItem(phone);
-        nbtItem.setString("phone_owner", target.getUniqueId().toString());
+        NBT.modify(phone, nbt -> {
+            nbt.setString("phone_owner", target.getUniqueId().toString());
+        });
 
-        target.getInventory().addItem(nbtItem.getItem());
+        target.getInventory().addItem(phone);
 
         player.sendMessage(PhonePlugin.getInstance().getMessage("commands.phone-given").replace("%player%", target.getName()));
 

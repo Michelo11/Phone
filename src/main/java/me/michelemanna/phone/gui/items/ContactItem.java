@@ -32,7 +32,7 @@ public class ContactItem extends AbstractItem {
             return new SkullBuilder(contact.getOwner())
                     .setDisplayName(contact.getName())
                     .setLegacyLore(Collections.singletonList(contact.getNumber() + ""));
-        } catch (MojangApiUtils.MojangApiException | IOException e) {
+        } catch (Exception | Error e) {
             return new ItemBuilder(Material.BARRIER)
                     .setDisplayName(PhonePlugin.getInstance().getMessage("gui.error"));
         }

@@ -1,6 +1,6 @@
 package me.michelemanna.phone.commands.subcommands;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NBT;
 import me.michelemanna.phone.PhonePlugin;
 import me.michelemanna.phone.commands.SubCommand;
 import org.bukkit.Material;
@@ -37,12 +37,13 @@ public class RepeaterCommand implements SubCommand {
                 .get();
 
 
-        NBTItem nbtItem = new NBTItem(repeater);
-        nbtItem.setBoolean("repeater", true);
-        nbtItem.setInteger("speed", speed);
-        nbtItem.setInteger("range", range);
+        NBT.modify(repeater, nbt -> {
+            nbt.setBoolean("repeater", true);
+            nbt.setInteger("speed", speed);
+            nbt.setInteger("range", range);
+        });
 
-        player.getInventory().addItem(nbtItem.getItem());
+        player.getInventory().addItem(repeater);
 
         player.sendMessage(PhonePlugin.getInstance().getMessage("commands.repeater-given"));
     }

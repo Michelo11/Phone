@@ -1,6 +1,6 @@
 package me.michelemanna.phone.listeners;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NBT;
 import me.michelemanna.phone.PhonePlugin;
 import me.michelemanna.phone.data.Repeater;
 import org.bukkit.Location;
@@ -22,14 +22,18 @@ public class RepeaterListener implements Listener {
         ItemStack item = event.getItemInHand();
 
         if (item.getType() == Material.IRON_BLOCK) {
-            NBTItem nbtItem = new NBTItem(item);
+            boolean repeater = NBT.get(item, nbt -> {
+                return nbt.hasTag("repeater");
+            });
 
-            if (!nbtItem.hasTag("repeater")) {
-                return;
-            }
+            if (!repeater) return;
 
-            int speed = nbtItem.getInteger("speed");
-            int range = nbtItem.getInteger("range");
+            int speed = NBT.get(item, nbt -> {
+                return nbt.getInteger("speed");
+            });
+            int range = NBT.get(item, nbt -> {
+                return nbt.getInteger("range");
+            });
 
             PhonePlugin.getInstance().getRepeaterManager().addRepeater(event.getBlock().getLocation(), speed, range);
 
