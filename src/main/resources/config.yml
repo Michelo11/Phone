@@ -17,6 +17,25 @@ repeater-distance: 30
 
 messages:
   commands:
+    help-command:
+      - "&6&m-------&f&m-------&6&m-------&f&m-------&6&m-------&f&m-------"
+      - "&r   &fRunning &6Phones&f by &6Michelo11"
+      - "&r"
+      - "&f/phone give <player> &8»&f Give a phone to a player"
+      - "&f/phone menu &8»&f Open the phone menu"
+      - "&f/phone number <player> &8»&f Retrieve a player's phone number"
+      - "&f/phone regen <player> &8»&f Generate a new phone number"
+      - "&f/phone renew <player> <messages> &8»&f Renew the phone subscription"
+      - "&f/phone whois <number> &8»&f Check who is the owner of a number"
+      - "&f/phone repeater <speed> <range> &8»&f Get a repeater item"
+      - "&f/phone message <number> <message> &8»&f Send a message to a player"
+      - "&f/phone call <number> &8»&f Call a player"
+      - "&f/phone accept &8»&f Accept a call"
+      - "&f/phone close &8»&f Close or deny a call"
+      - "&f/phone add <number> <name> &8»&f Add a contact"
+      - "&f/phone remove <name> &8»&f Remove a contact"
+      - "&6&m-------&f&m-------&6&m-------&f&m-------&6&m-------&f&m-------"
+
     player-only: "&8» &cOnly players can use this command"
 
     no-permission: "&8» &cYou don't have permission to use this command"
