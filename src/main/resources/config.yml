@@ -19,7 +19,7 @@ messages:
   commands:
     help-command:
       - "&6&m-------&f&m-------&6&m-------&f&m-------&6&m-------&f&m-------"
-      - "&r   &fRunning &6Phones&f by &6Michelo11"
+      - "&r   &fRunning &6Phone&f by &6Michelo11"
       - "&r"
       - "&f/phone give <player> &8»&f Give a phone to a player"
       - "&f/phone menu &8»&f Open the phone menu"
