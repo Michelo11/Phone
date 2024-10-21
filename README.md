@@ -4,7 +4,7 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">Parkour</h3>
+  <h3 align="center">Phone</h3>
 
   <p align="center">
     Receive phone calls and send messages with a minecraft phone!
@@ -29,7 +29,7 @@
 
 ## About The Project
 
-Welcome to the Phones Plugin repository, the right solution for introducing modern communication features to your Minecraft server. This plugin revolutionizes player interaction by bringing contacts, calls, and careers directly into the game from a phone item.
+Welcome to the Phone plugin repository, the right solution for introducing modern communication features to your Minecraft server. This plugin revolutionizes player interaction by bringing contacts, calls, and careers directly into the game from a phone item.
 
 ## Getting Started
 
