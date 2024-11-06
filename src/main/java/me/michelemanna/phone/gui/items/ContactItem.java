@@ -5,6 +5,7 @@ import me.michelemanna.phone.conversations.PlayerMessageConversation;
 import me.michelemanna.phone.data.Contact;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -14,9 +15,7 @@ import xyz.xenondevs.invui.item.ItemProvider;
 import xyz.xenondevs.invui.item.builder.ItemBuilder;
 import xyz.xenondevs.invui.item.builder.SkullBuilder;
 import xyz.xenondevs.invui.item.impl.AbstractItem;
-import xyz.xenondevs.invui.util.MojangApiUtils;
 
-import java.io.IOException;
 import java.util.Collections;
 
 public class ContactItem extends AbstractItem {
@@ -29,7 +28,16 @@ public class ContactItem extends AbstractItem {
     @Override
     public ItemProvider getItemProvider() {
         try {
-            return new SkullBuilder(contact.getOwner())
+            OfflinePlayer owner = Bukkit.getOfflinePlayer(contact.getOwner());
+            SkullBuilder builder;
+
+            if (owner.getName() == null) {
+                builder = new SkullBuilder(owner.getUniqueId());
+            } else {
+                builder = new SkullBuilder(owner.getName());
+            }
+
+            return builder
                     .setDisplayName(contact.getName())
                     .setLegacyLore(Collections.singletonList(contact.getNumber() + ""));
         } catch (Exception | Error e) {
