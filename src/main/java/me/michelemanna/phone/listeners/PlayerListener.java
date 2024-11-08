@@ -2,7 +2,9 @@ package me.michelemanna.phone.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBT;
 import me.michelemanna.phone.PhonePlugin;
+import me.michelemanna.phone.api.events.PhoneEvent;
 import me.michelemanna.phone.gui.PhoneMenu;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -33,14 +35,19 @@ public class PlayerListener implements Listener {
 
             event.setCancelled(true);
 
-            PhonePlugin.getInstance().getDatabase().getContacts(UUID.fromString(phoneOwner)).thenAccept(contacts -> {
-                try {
-                if (contacts == null) {
-                    event.getPlayer().sendMessage(PhonePlugin.getInstance().getMessage("gui.error"));
-                    return;
-                }
+            PhoneEvent phoneEvent = new PhoneEvent(event.getPlayer(), UUID.fromString(phoneOwner));
+            Bukkit.getPluginManager().callEvent(phoneEvent);
 
-                new PhoneMenu(contacts).open(event.getPlayer());
+            if (phoneEvent.isCancelled()) return;
+
+            PhonePlugin.getInstance().getDatabase().getContacts(phoneEvent.getPhoneOwner()).thenAccept(contacts -> {
+                try {
+                    if (contacts == null) {
+                        event.getPlayer().sendMessage(PhonePlugin.getInstance().getMessage("gui.error"));
+                        return;
+                    }
+
+                    new PhoneMenu(contacts).open(event.getPlayer());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

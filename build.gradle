@@ -1,10 +1,11 @@
 plugins {
     id 'java'
-    id "io.github.goooler.shadow" version "8.1.8"
+    id 'maven-publish'
+    id 'io.github.goooler.shadow' version '8.1.8'
 }
 
 group = 'me.michelemanna'
-version = '1.9'
+version = '1.10'
 
 repositories {
     mavenCentral()
@@ -17,14 +18,14 @@ repositories {
         url = "https://oss.sonatype.org/content/groups/public/"
     }
     maven {
+        name = "CodeMC"
+        url = "https://repo.codemc.io/repository/maven-public/"
+    }
+    maven {
         url = "https://repo.xenondevs.xyz/releases"
     }
     maven {
-        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
-    }
-    maven {
-        name = "CodeMC"
-        url = "https://repo.codemc.io/repository/maven-public/"
+        url = "https://repo.extendedclip.com/content/repositories/placeholderapi/"
     }
 }
 
@@ -38,6 +39,25 @@ dependencies {
 
 shadowJar {
     relocate("de.tr7zw.changeme.nbtapi", "me.michelemanna.phone.nbtapi")
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Michelo11/Phone")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+
+    publications {
+        gpr(MavenPublication) {
+            from (components.java)
+        }
+    }
 }
 
 def targetJavaVersion = 8
