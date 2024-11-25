@@ -18,8 +18,10 @@ public class WhoisCommand implements SubCommand {
             return;
         }
 
+        String number = args[1];
+
         PhonePlugin.getInstance().getDatabase().getOwner(Long.parseLong(args[1])).thenAccept(owner -> {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.whois").replace("%owner%", owner != null ? Bukkit.getOfflinePlayer(owner).getName() : "Unknown"));
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.whois").replace("%player%", owner != null ? Bukkit.getOfflinePlayer(owner).getName() : "Unknown").replace("%number%", number));
         });
     }
 }
