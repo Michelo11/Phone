@@ -41,8 +41,9 @@ public class ContactItem extends AbstractItem {
                     .setDisplayName(contact.getName())
                     .setLegacyLore(Collections.singletonList(contact.getNumber() + ""));
         } catch (Exception | Error e) {
-            return new ItemBuilder(Material.BARRIER)
-                    .setDisplayName(PhonePlugin.getInstance().getMessage("gui.error"));
+            return new ItemBuilder(Material.PLAYER_HEAD)
+                    .setDisplayName(contact.getName())
+                    .setLegacyLore(Collections.singletonList(contact.getNumber() + ""));
         }
     }
 
