@@ -15,6 +15,9 @@ resourcepack:
 
 repeater-distance: 30
 
+hooks:
+  voicechat: false
+
 messages:
   commands:
     help-command:

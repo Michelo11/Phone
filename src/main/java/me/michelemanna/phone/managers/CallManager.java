@@ -1,6 +1,7 @@
 package me.michelemanna.phone.managers;
 
 import me.michelemanna.phone.PhonePlugin;
+import me.michelemanna.phone.api.ICallManager;
 import me.michelemanna.phone.data.Repeater;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -8,22 +9,26 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CallManager {
+public class CallManager implements ICallManager {
     private final Map<Player, Player> calls = new HashMap<>();
     private final Map<Player, Player> pendingCalls = new HashMap<>();
 
+    @Override
     public Map<Player, Player> getCalls() {
         return calls;
     }
 
+    @Override
     public Map<Player, Player> getPendingCalls() {
         return pendingCalls;
     }
 
+    @Override
     public boolean isCalling(Player player) {
         return calls.containsKey(player) || calls.containsValue(player);
     }
 
+    @Override
     public Player getCall(Player player) {
         if (calls.containsKey(player))
             return calls.get(player);
@@ -37,6 +42,7 @@ public class CallManager {
         return null;
     }
 
+    @Override
     public void sendMessage(Player player, String message) {
         Player target = getCall(player);
 
@@ -63,5 +69,19 @@ public class CallManager {
                     .replace("%player%", player.getName())
                     .replace("%message%", message));
         }, (long) (delay));
+    }
+
+    @Override
+    public void call(Player player, Player target) {
+        this.calls.put(player, target);
+    }
+
+    @Override
+    public void endCall(Player player) {
+        if (calls.containsKey(player)) {
+            calls.remove(player);
+        } else {
+            calls.remove(this.getCall(player));
+        }
     }
 }

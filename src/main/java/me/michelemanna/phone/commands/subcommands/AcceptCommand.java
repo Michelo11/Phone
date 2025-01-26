@@ -19,7 +19,7 @@ public class AcceptCommand implements SubCommand {
             return;
         }
 
-        PhonePlugin.getInstance().getCallManager().getCalls().put(player, playerTarget);
+        PhonePlugin.getInstance().getCallManager().call(player, playerTarget);
 
         player.sendMessage(PhonePlugin.getInstance().getMessage("gui.call-accepted"));
 

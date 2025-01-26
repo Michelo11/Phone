@@ -2,6 +2,7 @@ package me.michelemanna.phone.commands;
 
 import me.michelemanna.phone.PhonePlugin;
 import me.michelemanna.phone.commands.subcommands.*;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class PhoneCommand implements TabExecutor {
     private final Map<String, SubCommand> subCommands = new HashMap<>();
@@ -56,7 +58,14 @@ public class PhoneCommand implements TabExecutor {
 
     @Nullable
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        return new ArrayList<>(this.subCommands.keySet());
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (args.length == 1) return new ArrayList<>(this.subCommands.keySet());
+
+        if (args.length > 1 && (args[0].equalsIgnoreCase("give") ||
+                args[0].equalsIgnoreCase("number") ||
+                args[0].equalsIgnoreCase("regen") ||
+                args[0].equalsIgnoreCase("renew"))) return Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList());
+
+        return new ArrayList<>();
     }
 }

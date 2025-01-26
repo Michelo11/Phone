@@ -1,8 +1,8 @@
 package me.michelemanna.phone.commands.subcommands;
 
 import me.michelemanna.phone.PhonePlugin;
+import me.michelemanna.phone.api.ICallManager;
 import me.michelemanna.phone.commands.SubCommand;
-import me.michelemanna.phone.managers.CallManager;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -15,7 +15,7 @@ public class CloseCommand implements SubCommand {
             return;
         }
 
-        CallManager callManager = PhonePlugin.getInstance().getCallManager();
+        ICallManager callManager = PhonePlugin.getInstance().getCallManager();
 
         if (callManager.getPendingCalls().containsValue(player)) {
             Player playerTarget = callManager.getPendingCalls().entrySet().stream()
@@ -39,11 +39,7 @@ public class CloseCommand implements SubCommand {
         }
 
         if (callManager.isCalling(player)) {
-            if (callManager.getCalls().containsKey(player)) {
-                callManager.getCalls().remove(player);
-            } else {
-                callManager.getCalls().remove(callManager.getCall(player));
-            }
+            callManager.endCall(player);
 
             player.sendMessage(PhonePlugin.getInstance().getMessage("gui.close-message"));
 

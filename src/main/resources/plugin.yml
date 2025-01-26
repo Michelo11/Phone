@@ -5,6 +5,7 @@ main: me.michelemanna.phone.PhonePlugin
 api-version: '1.13'
 softdepend:
     - PlaceholderAPI
+    - voicechat
 commands:
     phone:
         description: Open the phone

@@ -1,7 +1,7 @@
 package me.michelemanna.phone.gui.items;
 
 import me.michelemanna.phone.PhonePlugin;
-import me.michelemanna.phone.managers.CallManager;
+import me.michelemanna.phone.api.ICallManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -33,7 +33,7 @@ public class CloseItem extends AbstractItem {
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent inventoryClickEvent) {
-        CallManager callManager = PhonePlugin.getInstance().getCallManager();
+        ICallManager callManager = PhonePlugin.getInstance().getCallManager();
 
         if (callManager.getPendingCalls().containsValue(player)) {
             Player playerTarget = callManager.getPendingCalls().entrySet().stream()
@@ -57,11 +57,7 @@ public class CloseItem extends AbstractItem {
         }
 
         if (callManager.isCalling(player)) {
-            if (callManager.getCalls().containsKey(player)) {
-                callManager.getCalls().remove(player);
-            } else {
-                callManager.getCalls().remove(callManager.getCall(player));
-            }
+            callManager.endCall(player);
 
             player.sendMessage(PhonePlugin.getInstance().getMessage("gui.close-message"));
 
