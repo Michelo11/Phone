@@ -34,8 +34,11 @@ public class RepeaterListener implements Listener {
             int range = NBT.get(item, nbt -> {
                 return nbt.getInteger("range");
             });
+            String career = NBT.get(item, nbt -> {
+                return nbt.getString("career");
+            });
 
-            PhonePlugin.getInstance().getRepeaterManager().addRepeater(event.getBlock().getLocation(), speed, range);
+            PhonePlugin.getInstance().getRepeaterManager().addRepeater(event.getBlock().getLocation(), speed, range, career);
 
             event.setCancelled(true);
 

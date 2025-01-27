@@ -16,7 +16,7 @@ public class RepeaterCommand implements SubCommand {
             return;
         }
 
-        if (args.length != 3) {
+        if (args.length != 4) {
             player.sendMessage(PhonePlugin.getInstance().getMessage("commands.repeater-usage"));
             return;
         }
@@ -31,6 +31,11 @@ public class RepeaterCommand implements SubCommand {
             return;
         }
 
+        if (PhonePlugin.getInstance().getConfig().getConfigurationSection("careers." + args[3].toLowerCase()) == null) {
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.invalid-career"));
+            return;
+        }
+
         ItemStack repeater = new ItemBuilder(Material.IRON_BLOCK)
                 .setDisplayName("§bRepeater")
                 .setCustomModelData(1)
@@ -41,6 +46,7 @@ public class RepeaterCommand implements SubCommand {
             nbt.setBoolean("repeater", true);
             nbt.setInteger("speed", speed);
             nbt.setInteger("range", range);
+            nbt.setString("career", args[3].toLowerCase());
         });
 
         player.getInventory().addItem(repeater);

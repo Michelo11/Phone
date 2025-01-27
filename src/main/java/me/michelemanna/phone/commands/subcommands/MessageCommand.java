@@ -3,6 +3,7 @@ package me.michelemanna.phone.commands.subcommands;
 import me.michelemanna.phone.PhonePlugin;
 import me.michelemanna.phone.commands.SubCommand;
 import me.michelemanna.phone.data.Repeater;
+import me.michelemanna.phone.data.Sim;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -47,26 +48,33 @@ public class MessageCommand implements SubCommand {
                 return;
             }
 
-            PhonePlugin.getInstance().getDatabase().decrementMessages(player.getUniqueId());
+            PhonePlugin.getInstance().getDatabase().incrementMessages(player.getUniqueId());
 
-            Repeater nearestRepeater = PhonePlugin.getInstance().getRepeaterManager().getNearest(player.getLocation());
+            PhonePlugin.getInstance().getDatabase().getSim(owner).thenAccept(sim -> {
+                if (sim == null) {
+                    player.sendMessage(PhonePlugin.getInstance().getMessage("conversations.no-own-sim"));
+                    return;
+                }
 
-            if (nearestRepeater == null || nearestRepeater.range() < player.getLocation().distance(nearestRepeater.location())) {
-                player.sendMessage(PhonePlugin.getInstance().getMessage("conversations.no-signal"));
-                return;
-            }
+                Repeater nearestRepeater = PhonePlugin.getInstance().getRepeaterManager().getNearest(player.getLocation(), sim.career());
 
-            double delay = nearestRepeater.speed() * 0.1 + player.getLocation().distance(nearestRepeater.location());
+                if (nearestRepeater == null || nearestRepeater.range() < player.getLocation().distance(nearestRepeater.location())) {
+                    player.sendMessage(PhonePlugin.getInstance().getMessage("conversations.no-signal"));
+                    return;
+                }
 
-            Bukkit.getScheduler().runTaskLater(PhonePlugin.getInstance(), () -> {
-                target.sendMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent")
-                        .replace("%player%", player.getName())
-                        .replace("%message%", message));
+                double delay = nearestRepeater.speed() * 0.1 + player.getLocation().distance(nearestRepeater.location());
 
-                player.sendMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent-self")
-                        .replace("%player%", target.getName())
-                        .replace("%message%", message));
-            }, (long) (delay));
+                Bukkit.getScheduler().runTaskLater(PhonePlugin.getInstance(), () -> {
+                    target.sendMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent")
+                            .replace("%player%", player.getName())
+                            .replace("%message%", message));
+
+                    player.sendMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent-self")
+                            .replace("%player%", target.getName())
+                            .replace("%message%", message));
+                }, (long) (delay));
+            });
         });
     }
 }

@@ -18,17 +18,8 @@ public class RenewCommand implements SubCommand {
             return;
         }
 
-        int messages = 0;
-
-        try {
-            messages = Integer.parseInt(args[2]);
-        } catch (NumberFormatException e) {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.invalid-number"));
-            return;
-        }
-
-        if (messages < 1) {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.invalid-number"));
+        if (PhonePlugin.getInstance().getConfig().getConfigurationSection("careers." + args[2].toLowerCase()) == null) {
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.invalid-career"));
             return;
         }
 
@@ -39,14 +30,13 @@ public class RenewCommand implements SubCommand {
             return;
         }
 
-        int finalMessages = messages;
         PhonePlugin.getInstance().getDatabase().getPhoneNumber(target.getUniqueId()).thenAccept(phoneNumber -> {
             if (phoneNumber == null) {
                 player.sendMessage(PhonePlugin.getInstance().getMessage("commands.player-not-found"));
                 return;
             }
 
-            PhonePlugin.getInstance().getDatabase().renewPhoneNumber(target.getUniqueId(), finalMessages);
+            PhonePlugin.getInstance().getDatabase().renewCareer(target.getUniqueId(), args[2].toLowerCase());
             player.sendMessage(PhonePlugin.getInstance().getMessage("commands.phone-renewed"));
         });
     }

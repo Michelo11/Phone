@@ -18,16 +18,17 @@ import xyz.xenondevs.invui.item.impl.AbstractItem;
 
 import java.util.*;
 
-
 public class PhoneMenu implements InventoryHolder {
     private static final Map<Player, ItemStack[]> INVENTORIES = new HashMap<>();
     private final List<Contact> contacts = new ArrayList<>();
+    private final String career;
     private final Map<Integer, AbstractItem> items = new HashMap<>();
     private int page = 0;
     private Inventory inventory;
 
-    public PhoneMenu(List<Contact> contacts) {
+    public PhoneMenu(List<Contact> contacts, String career) {
         this.contacts.addAll(contacts);
+        this.career = career;
     }
 
     public void open(Player player) {
@@ -102,7 +103,7 @@ public class PhoneMenu implements InventoryHolder {
     public ItemStack getSignalItem(Player player) {
         Repeater nearest = PhonePlugin.getInstance()
                 .getRepeaterManager()
-                .getNearest(player.getLocation());
+                .getNearest(player.getLocation(), career);
 
         if (nearest == null) {
             return new ItemBuilder(Material.MAP)

@@ -75,15 +75,16 @@ public class DatabaseManager {
         });
     }
 
-    public void renewPhoneNumber(UUID owner, int messages) {
+    public void renewCareer(UUID owner, String career) {
         Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
             try {
                 Connection connection = provider.getConnection();
-                PreparedStatement statement = connection.prepareStatement("UPDATE phoneNumbers SET lastRenew = ?, messageCount = ? WHERE owner = ?");
+                PreparedStatement statement = connection.prepareStatement("UPDATE phoneNumbers SET lastRenew = ?, messageCount = ?, career = ? WHERE owner = ?");
 
                 statement.setLong(1, System.currentTimeMillis());
-                statement.setInt(2, messages);
-                statement.setString(3, owner.toString());
+                statement.setInt(2, 0);
+                statement.setString(3, career);
+                statement.setString(4, owner.toString());
 
                 statement.executeUpdate();
                 statement.close();
@@ -94,18 +95,18 @@ public class DatabaseManager {
         });
     }
 
-    public CompletableFuture<Sim> getLatestRenew(UUID owner) {
+    public CompletableFuture<Sim> getSim(UUID owner) {
         CompletableFuture<Sim> future = new CompletableFuture<>();
 
         Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
             try {
                 Connection connection = provider.getConnection();
-                PreparedStatement statement = connection.prepareStatement("SELECT lastRenew, messageCount FROM phoneNumbers WHERE owner = ?");
+                PreparedStatement statement = connection.prepareStatement("SELECT lastRenew, messageCount, career FROM phoneNumbers WHERE owner = ?");
 
                 statement.setString(1, owner.toString());
 
                 ResultSet set = statement.executeQuery();
-                future.complete(set.next() ? new Sim(set.getInt("messageCount"), set.getLong("lastRenew")) : null);
+                future.complete(set.next() ? new Sim(set.getInt("messageCount"), set.getLong("lastRenew"), set.getString("career")) : null);
 
                 statement.close();
                 provider.closeConnection(connection);
@@ -117,11 +118,11 @@ public class DatabaseManager {
         return future;
     }
 
-    public void decrementMessages(UUID owner) {
+    public void incrementMessages(UUID owner) {
         Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
             try {
                 Connection connection = provider.getConnection();
-                PreparedStatement statement = connection.prepareStatement("UPDATE phoneNumbers SET messageCount = messageCount - 1 WHERE owner = ?");
+                PreparedStatement statement = connection.prepareStatement("UPDATE phoneNumbers SET messageCount = messageCount + 1 WHERE owner = ?");
 
                 statement.setString(1, owner.toString());
 
@@ -256,7 +257,7 @@ public class DatabaseManager {
                 List<Repeater> locations = new ArrayList<>();
 
                 while (set.next()) {
-                    locations.add(new Repeater(new Location(Bukkit.getWorld(set.getString("world")), set.getInt("x"), set.getInt("y"), set.getInt("z")), set.getInt("speed"), set.getInt("range")));
+                    locations.add(new Repeater(new Location(Bukkit.getWorld(set.getString("world")), set.getInt("x"), set.getInt("y"), set.getInt("z")), set.getInt("speed"), set.getInt("range"), set.getString("career")));
                 }
 
                 future.complete(locations);
@@ -272,11 +273,11 @@ public class DatabaseManager {
         return future;
     }
 
-    public void addRepeater(Location location, int speed, int range) {
+    public void addRepeater(Location location, int speed, int range, String career) {
         Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
             try {
                 Connection connection = provider.getConnection();
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO repeaters (x, y, z, world, speed, `range`) VALUES (?, ?, ?, ?, ?, ?)");
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO repeaters (x, y, z, world, speed, `range`, career) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
                 statement.setInt(1, location.getBlockX());
                 statement.setInt(2, location.getBlockY());
@@ -284,6 +285,7 @@ public class DatabaseManager {
                 statement.setString(4, location.getWorld().getName());
                 statement.setInt(5, speed);
                 statement.setInt(6, range);
+                statement.setString(7, career);
 
                 statement.executeUpdate();
                 statement.close();

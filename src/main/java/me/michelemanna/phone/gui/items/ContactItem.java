@@ -51,26 +51,26 @@ public class ContactItem extends AbstractItem {
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent inventoryClickEvent) {
         player.closeInventory();
 
-        PhonePlugin.getInstance().getDatabase().getLatestRenew(player.getUniqueId()).thenAccept(sim -> {
+        PhonePlugin.getInstance().getDatabase().getSim(player.getUniqueId()).thenAccept(sim -> {
 
             if (sim == null) {
                 player.sendMessage(PhonePlugin.getInstance().getMessage("gui.phone-not-renewed"));
                 return;
             }
 
-            if (System.currentTimeMillis() - sim.lastRenew() > 1000*60*60*24*30L) {
+            if (System.currentTimeMillis() - sim.lastRenew() > 1000*60*60*24*PhonePlugin.getInstance().getConfig().getLong("careers." + sim.career() + ".duration")) {
                 player.sendMessage(PhonePlugin.getInstance().getMessage("gui.phone-expired"));
                 return;
             }
 
-            if (!PhonePlugin.getInstance().getRepeaterManager().isNear(player.getLocation())) {
+            if (!PhonePlugin.getInstance().getRepeaterManager().isNear(player.getLocation(), sim.career())) {
                 player.sendMessage(PhonePlugin.getInstance().getMessage("gui.no-signal"));
                 return;
             }
 
             switch (clickType) {
                 case LEFT:
-                    if (sim.messages() < 1) {
+                    if (sim.messagesSent() >= PhonePlugin.getInstance().getConfig().getLong("careers." + sim.career() + ".messages")) {
                         player.sendMessage(PhonePlugin.getInstance().getMessage("gui.no-messages"));
                         return;
                     }

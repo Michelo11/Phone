@@ -31,7 +31,14 @@ public class MenuCommand implements SubCommand {
                         return;
                     }
 
-                    new PhoneMenu(contacts).open(player);
+                    PhonePlugin.getInstance().getDatabase().getSim(player.getUniqueId()).thenAccept(sim -> {
+                        if (sim == null) {
+                            player.sendMessage(PhonePlugin.getInstance().getMessage("gui.phone-not-renewed"));
+                            return;
+                        }
+
+                        new PhoneMenu(contacts, sim.career()).open(player);
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

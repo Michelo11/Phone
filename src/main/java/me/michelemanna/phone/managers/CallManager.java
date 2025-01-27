@@ -51,24 +51,31 @@ public class CallManager implements ICallManager {
             return;
         }
 
-        Repeater nearestRepeater = PhonePlugin.getInstance().getRepeaterManager().getNearest(player.getLocation());
+        PhonePlugin.getInstance().getDatabase().getSim(player.getUniqueId()).thenAccept(sim -> {
+            if (sim == null) {
+                player.sendMessage(PhonePlugin.getInstance().getMessage("listeners.no-sim"));
+                return;
+            }
 
-        if (nearestRepeater == null || nearestRepeater.range() < player.getLocation().distance(nearestRepeater.location())) {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("listeners.no-signal"));
-            return;
-        }
+            Repeater nearestRepeater = PhonePlugin.getInstance().getRepeaterManager().getNearest(player.getLocation(), sim.career());
 
-        double delay = nearestRepeater.speed() * 0.1 + player.getLocation().distance(nearestRepeater.location());
+            if (nearestRepeater == null || nearestRepeater.range() < player.getLocation().distance(nearestRepeater.location())) {
+                player.sendMessage(PhonePlugin.getInstance().getMessage("listeners.no-signal"));
+                return;
+            }
 
-        Bukkit.getScheduler().runTaskLater(PhonePlugin.getInstance(), () -> {
-            target.sendMessage(PhonePlugin.getInstance().getMessage("listeners.call-message")
-                    .replace("%player%", player.getName())
-                    .replace("%message%", message));
+            double delay = nearestRepeater.speed() * 0.1 + player.getLocation().distance(nearestRepeater.location());
 
-            player.sendMessage(PhonePlugin.getInstance().getMessage("listeners.call-message-self")
-                    .replace("%player%", player.getName())
-                    .replace("%message%", message));
-        }, (long) (delay));
+            Bukkit.getScheduler().runTaskLater(PhonePlugin.getInstance(), () -> {
+                target.sendMessage(PhonePlugin.getInstance().getMessage("listeners.call-message")
+                        .replace("%player%", player.getName())
+                        .replace("%message%", message));
+
+                player.sendMessage(PhonePlugin.getInstance().getMessage("listeners.call-message-self")
+                        .replace("%player%", player.getName())
+                        .replace("%message%", message));
+            }, (long) (delay));
+        });
     }
 
     @Override

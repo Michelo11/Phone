@@ -3,40 +3,46 @@ package me.michelemanna.phone.data;
 import java.util.Objects;
 
 public final class Sim {
-    private final int messages;
+    private final int messagesSent;
     private final long lastRenew;
+    private final String career;
 
-    public Sim(int messages, long lastRenew) {
-        this.messages = messages;
+    public Sim(int messagesSent, long lastRenew, String career) {
+        this.messagesSent = messagesSent;
         this.lastRenew = lastRenew;
+        this.career = career;
     }
 
-    public int messages() {
-        return messages;
+    public int messagesSent() {
+        return messagesSent;
     }
 
     public long lastRenew() {
         return lastRenew;
     }
 
+    public String career() {
+        return career;
+    }
+
     @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        Sim that = (Sim) obj;
-        return this.messages == that.messages &&
-                this.lastRenew == that.lastRenew;
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Sim sim = (Sim) o;
+        return messagesSent == sim.messagesSent && lastRenew == sim.lastRenew && Objects.equals(career, sim.career);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(messages, lastRenew);
+        return Objects.hash(messagesSent, lastRenew, career);
     }
 
     @Override
     public String toString() {
-        return "Sim[" +
-                "messages=" + messages + ", " +
-                "lastRenew=" + lastRenew + ']';
+        return "Sim{" +
+                "messagesSent=" + messagesSent +
+                ", lastRenew=" + lastRenew +
+                ", career='" + career + '\'' +
+                '}';
     }
 }

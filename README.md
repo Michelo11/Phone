@@ -55,6 +55,8 @@ Welcome to the Phone plugin repository, the right solution for introducing moder
 
 - Repeaters: Make sure to stay near a repeater pylon with an amazing texture to make a call or send a message.
 
+- Voice Chat: Call a friend and talk with him in a voice chat.
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.

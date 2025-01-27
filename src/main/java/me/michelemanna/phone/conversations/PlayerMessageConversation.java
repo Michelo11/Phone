@@ -37,26 +37,34 @@ public class PlayerMessageConversation extends StringPrompt {
             return END_OF_CONVERSATION;
         }
 
-        PhonePlugin.getInstance().getDatabase().decrementMessages(((Player) context.getForWhom()).getUniqueId());
+        PhonePlugin.getInstance().getDatabase().incrementMessages(((Player) context.getForWhom()).getUniqueId());
 
-        Repeater nearestRepeater = PhonePlugin.getInstance().getRepeaterManager().getNearest(player.getLocation());
+        PhonePlugin.getInstance().getDatabase().getSim(owner).thenAccept(sim -> {
+            if (sim == null) {
+                context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("conversations.no-own-sim"));
+                return;
+            }
 
-        if (nearestRepeater == null || nearestRepeater.range() < player.getLocation().distance(nearestRepeater.location())) {
-            context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("conversations.no-signal"));
-            return END_OF_CONVERSATION;
-        }
+            Repeater nearestRepeater = PhonePlugin.getInstance().getRepeaterManager().getNearest(player.getLocation(), sim.career());
 
-        double delay = nearestRepeater.speed() * 0.1 + player.getLocation().distance(nearestRepeater.location());
+            if (nearestRepeater == null || nearestRepeater.range() < player.getLocation().distance(nearestRepeater.location())) {
+                context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("conversations.no-signal"));
+                return;
+            }
 
-        Bukkit.getScheduler().runTaskLater(PhonePlugin.getInstance(), () -> {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent")
-                    .replace("%player%", ((Player) context.getForWhom()).getName())
-                    .replace("%message%", input));
+            double delay = nearestRepeater.speed() * 0.1 + player.getLocation().distance(nearestRepeater.location());
 
-            context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent-self")
-                    .replace("%player%", player.getName())
-                    .replace("%message%", input));
-        }, (long) (delay));
+            Bukkit.getScheduler().runTaskLater(PhonePlugin.getInstance(), () -> {
+                player.sendMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent")
+                        .replace("%player%", ((Player) context.getForWhom()).getName())
+                        .replace("%message%", input));
+
+                context.getForWhom().sendRawMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent-self")
+                        .replace("%player%", player.getName())
+                        .replace("%message%", input));
+            }, (long) (delay));
+        });
+
         return END_OF_CONVERSATION;
     }
 }

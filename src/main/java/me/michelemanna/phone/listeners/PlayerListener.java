@@ -47,7 +47,14 @@ public class PlayerListener implements Listener {
                         return;
                     }
 
-                    new PhoneMenu(contacts).open(event.getPlayer());
+                    PhonePlugin.getInstance().getDatabase().getSim(phoneEvent.getPhoneOwner()).thenAccept(sim -> {
+                        if (sim == null) {
+                            event.getPlayer().sendMessage(PhonePlugin.getInstance().getMessage("gui.phone-not-renewed"));
+                            return;
+                        }
+
+                        new PhoneMenu(contacts, sim.career()).open(event.getPlayer());
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
