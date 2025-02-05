@@ -18,6 +18,7 @@ public class DatabaseManager {
     private final ConnectionProvider provider;
 
     private final Map<UUID, Long> numbersCache = new HashMap<>();
+    private final Map<UUID, String> careersCache = new HashMap<>();
 
     public DatabaseManager(PhonePlugin plugin) throws SQLException, ClassNotFoundException {
         String type = plugin.getConfig().getString("mysql.type", "sqlite");
@@ -85,6 +86,8 @@ public class DatabaseManager {
                 statement.setInt(2, 0);
                 statement.setString(3, career);
                 statement.setString(4, owner.toString());
+
+                careersCache.put(owner, career);
 
                 statement.executeUpdate();
                 statement.close();
@@ -320,13 +323,17 @@ public class DatabaseManager {
         Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
             try {
                 Connection connection = provider.getConnection();
-                PreparedStatement statement = connection.prepareStatement("SELECT number FROM phoneNumbers WHERE owner = ?");
+                PreparedStatement statement = connection.prepareStatement("SELECT number, career FROM phoneNumbers WHERE owner = ?");
 
                 statement.setString(1, owner.toString());
 
                 ResultSet set = statement.executeQuery();
                 if (set.next()) {
                     numbersCache.put(owner, set.getLong("number"));
+
+                    if (set.getString("career") != null) {
+                        careersCache.put(owner, set.getString("career"));
+                    }
                 }
 
                 set.close();
@@ -340,6 +347,10 @@ public class DatabaseManager {
 
     public Map<UUID, Long> getNumbersCache() {
         return numbersCache;
+    }
+
+    public Map<UUID, String> getCareersCache() {
+        return careersCache;
     }
 
     public void close() {

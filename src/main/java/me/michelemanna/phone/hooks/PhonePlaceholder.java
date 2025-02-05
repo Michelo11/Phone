@@ -29,33 +29,35 @@ public class PhonePlaceholder extends PlaceholderExpansion {
             return "";
         }
 
-        if (params.equals("number")) {
-            return PhonePlugin.getInstance().getDatabase().getNumbersCache().getOrDefault(player.getUniqueId(), 0L).toString();
-        }
+        switch (params) {
+            case "number":
+                return PhonePlugin.getInstance().getDatabase().getNumbersCache().getOrDefault(player.getUniqueId(), 0L).toString();
+            case "distance": {
+                Repeater nearest = PhonePlugin.getInstance().getRepeaterManager().getNearest(player.getLocation());
+                return nearest == null ? "N/A" : String.valueOf(Math.round(nearest.location().distance(player.getLocation())));
+            }
+            case "career":
+                String career = PhonePlugin.getInstance().getDatabase().getCareersCache().get(player.getUniqueId());
+                return career == null ? "N/A" : career;
+            case "connection": {
+                Repeater nearest = PhonePlugin.getInstance()
+                        .getRepeaterManager()
+                        .getNearest(player.getLocation());
 
-        if (params.equals("distance")) {
-            Repeater nearest = PhonePlugin.getInstance().getRepeaterManager().getNearest(player.getLocation());
-            return nearest == null ? "N/A" : String.valueOf(Math.round(nearest.location().distance(player.getLocation())));
-        }
+                if (nearest == null) {
+                    return "No connection";
+                }
 
-        if (params.equals("connection")) {
-            Repeater nearest = PhonePlugin.getInstance()
-                    .getRepeaterManager()
-                    .getNearest(player.getLocation());
+                double distance = nearest.location().distance(player.getLocation());
 
-            if (nearest == null) {
+                if (distance <= nearest.range() * 0.3) {
+                    return "Full connection";
+                } else if (distance <= nearest.range()) {
+                    return "Half connection";
+                }
+
                 return "No connection";
             }
-
-            double distance = nearest.location().distance(player.getLocation());
-
-            if (distance <= nearest.range() * 0.3) {
-                return "Full connection";
-            } else if (distance <= nearest.range()) {
-                return "Half connection";
-            }
-
-            return "No connection";
         }
 
         return null;
