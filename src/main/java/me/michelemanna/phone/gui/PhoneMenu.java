@@ -4,6 +4,7 @@ import me.michelemanna.phone.PhonePlugin;
 import me.michelemanna.phone.data.Contact;
 import me.michelemanna.phone.data.Repeater;
 import me.michelemanna.phone.gui.items.*;
+import me.michelemanna.phone.utils.InventoryUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,7 +20,6 @@ import xyz.xenondevs.invui.item.impl.AbstractItem;
 import java.util.*;
 
 public class PhoneMenu implements InventoryHolder {
-    private static final Map<Player, ItemStack[]> INVENTORIES = new HashMap<>();
     private final List<Contact> contacts = new ArrayList<>();
     private final String career;
     private final Map<Integer, AbstractItem> items = new HashMap<>();
@@ -33,8 +33,7 @@ public class PhoneMenu implements InventoryHolder {
 
     public void open(Player player) {
         Bukkit.getScheduler().runTask(PhonePlugin.getInstance(), () -> {
-            INVENTORIES.put(player, player.getInventory().getContents());
-
+            InventoryUtils.clearInventory(player);
             redraw(player);
 
             player.openInventory(inventory);
@@ -46,7 +45,6 @@ public class PhoneMenu implements InventoryHolder {
             inventory = Bukkit.createInventory(this, 54, PhonePlugin.getInstance().getMessage("gui.title"));
         }
 
-        player.getInventory().clear();
         inventory.clear();
 
         for (int i = 0; i < 14; i++) {
@@ -70,8 +68,6 @@ public class PhoneMenu implements InventoryHolder {
 
         inventory.setItem(49, getSignalItem(player));
 
-        PlayerInventory playerInventory = player.getInventory();
-
         items.put(119, new AcceptItem());
 
         for (int i = 21; i < 24; i++) {
@@ -82,14 +78,13 @@ public class PhoneMenu implements InventoryHolder {
 
         Bukkit.getScheduler().runTask(PhonePlugin.getInstance(), () -> {
             items.forEach((slot, item) -> {
-                Inventory inv = inventory;
-
                 if (slot >= 100) {
-                    inv = playerInventory;
                     slot -= 100;
+                    InventoryUtils.setItem(player, slot, item.getItemProvider().get());
+                    return;
                 }
 
-                inv.setItem(slot, item.getItemProvider().get());
+                inventory.setItem(slot, item.getItemProvider().get());
             });
         });
     }
@@ -142,18 +137,6 @@ public class PhoneMenu implements InventoryHolder {
         if (items.containsKey(slot)) {
             items.get(slot).handleClick(event.getClick(), (Player) event.getWhoClicked(), event);
         }
-    }
-
-    public static ItemStack[] getPlayerContent(Player player) {
-        return INVENTORIES.remove(player);
-    }
-
-    public static void closeAll() {
-        INVENTORIES.forEach((player, content) -> {
-            player.closeInventory();
-            player.getInventory().clear();
-            player.getInventory().setContents(content);
-        });
     }
 
     public int getCurrentPage() {

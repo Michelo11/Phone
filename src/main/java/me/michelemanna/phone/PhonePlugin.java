@@ -1,5 +1,7 @@
 package me.michelemanna.phone;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import me.michelemanna.phone.api.ICallManager;
 import me.michelemanna.phone.commands.PhoneCommand;
 import me.michelemanna.phone.gui.PhoneMenu;
@@ -25,8 +27,17 @@ public final class PhonePlugin extends JavaPlugin {
     private RepeaterManager repeaterManager;
 
     @Override
+    public void onLoad() {
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        PacketEvents.getAPI().load();
+    }
+
+    @Override
     public void onEnable() {
         instance = this;
+
+        PacketEvents.getAPI().init();
+
         this.saveDefaultConfig();
         this.getConfig().options().copyDefaults(true);
         this.saveConfig();
@@ -64,8 +75,8 @@ public final class PhonePlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        PhoneMenu.closeAll();
         this.database.close();
+        PacketEvents.getAPI().terminate();
     }
 
     public static PhonePlugin getInstance() {
