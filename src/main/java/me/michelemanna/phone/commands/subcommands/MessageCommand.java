@@ -57,13 +57,14 @@ public class MessageCommand implements SubCommand {
                 }
 
                 Repeater nearestRepeater = PhonePlugin.getInstance().getRepeaterManager().getNearest(player.getLocation(), sim.career());
-
-                if (nearestRepeater == null || nearestRepeater.range() < player.getLocation().distance(nearestRepeater.location())) {
+                boolean enabled = PhonePlugin.getInstance().getConfig().getBoolean("repeater-enabled", true);
+                if (enabled &&
+                        (nearestRepeater == null || nearestRepeater.range() < player.getLocation().distance(nearestRepeater.location()))) {
                     player.sendMessage(PhonePlugin.getInstance().getMessage("conversations.no-signal"));
                     return;
                 }
 
-                double delay = nearestRepeater.speed() * 0.1 + player.getLocation().distance(nearestRepeater.location());
+                double delay = !enabled ? 0 : nearestRepeater.speed() * 0.1 + player.getLocation().distance(nearestRepeater.location());
 
                 Bukkit.getScheduler().runTaskLater(PhonePlugin.getInstance(), () -> {
                     target.sendMessage(PhonePlugin.getInstance().getMessage("conversations.message-sent")

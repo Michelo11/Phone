@@ -1,6 +1,8 @@
 package me.michelemanna.phone.listeners;
 
+import me.michelemanna.phone.PhonePlugin;
 import me.michelemanna.phone.gui.PhoneMenu;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,7 +12,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 public class InventoryListener implements Listener {
     @EventHandler
@@ -35,14 +36,15 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        PlayerInventory inventory = player.getInventory();
-        ItemStack[] contents = PhoneMenu.getPlayerContent(player);
+        Bukkit.getScheduler().runTaskLater(PhonePlugin.getInstance(), () -> {
+            ItemStack[] contents = PhoneMenu.getPlayerContent(player);
 
-        player.getInventory().clear();
+            player.getInventory().clear();
 
-        if (contents != null) {
-            inventory.setContents(contents);
-        }
+            if (contents != null) {
+                player.getInventory().setContents(contents);
+            }
+        }, 1);
     }
 
     @EventHandler

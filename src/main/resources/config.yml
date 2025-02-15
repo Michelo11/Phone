@@ -18,6 +18,7 @@ careers:
     messages: 100
     duration: 30
 
+repeater-enabled: true
 repeater-distance: 30
 
 hooks:
@@ -70,6 +71,7 @@ messages:
 
     repeater-given: "&8» &7You have received a repeater"
     repeater-usage: "&8» &cUsage: /phone repeater <speed> <range> <career>"
+    repeater-disabled: "&8» &cThe repeater is disabled"
     invalid-arguments: "&8» &cInvalid argument"
 
     message-usage: "&8» &cUsage: /phone message <number> <message>"

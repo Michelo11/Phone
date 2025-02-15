@@ -101,6 +101,13 @@ public class PhoneMenu implements InventoryHolder {
     }
 
     public ItemStack getSignalItem(Player player) {
+        if (!PhonePlugin.getInstance().getConfig().getBoolean("repeater-enabled", true)) {
+            return new ItemBuilder(Material.MAP)
+                    .setDisplayName(PhonePlugin.getInstance().getMessage("gui.signal.full"))
+                    .setCustomModelData(1013)
+                    .get();
+        }
+
         Repeater nearest = PhonePlugin.getInstance()
                 .getRepeaterManager()
                 .getNearest(player.getLocation(), career);

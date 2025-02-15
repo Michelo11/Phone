@@ -63,7 +63,8 @@ public class ContactItem extends AbstractItem {
                 return;
             }
 
-            if (!PhonePlugin.getInstance().getRepeaterManager().isNear(player.getLocation(), sim.career())) {
+            if (PhonePlugin.getInstance().getConfig().getBoolean("repeater-enabled", true) &&
+                    !PhonePlugin.getInstance().getRepeaterManager().isNear(player.getLocation(), sim.career())) {
                 player.sendMessage(PhonePlugin.getInstance().getMessage("gui.no-signal"));
                 return;
             }

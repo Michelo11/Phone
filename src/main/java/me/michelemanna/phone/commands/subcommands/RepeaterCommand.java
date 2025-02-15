@@ -21,6 +21,11 @@ public class RepeaterCommand implements SubCommand {
             return;
         }
 
+        if (!PhonePlugin.getInstance().getConfig().getBoolean("repeater-enabled")) {
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.repeater-disabled"));
+            return;
+        }
+
         int speed, range;
 
         try {
