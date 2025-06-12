@@ -11,7 +11,7 @@ mysql:
 # Plugin configuration
 resourcepack:
   enabled: true
-  url: "https://github.com/Michelo11/Phone/releases/download/v1.10.4/Custom.Phone.zip"
+  url: "https://github.com/Michelo11/Phone/releases/download/v2.0.5/Custom.Phone.zip"
 
 careers:
   example:

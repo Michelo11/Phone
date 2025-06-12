@@ -47,6 +47,9 @@ public class RepeaterListener implements Listener {
             armorStand.setGravity(false);
             armorStand.setCanPickupItems(false);
             armorStand.setCustomName("Pylon");
+            armorStand.setInvisible(true);
+            armorStand.setInvulnerable(true);
+            armorStand.getEquipment().setHelmet(item);
 
             for (int i = 0; i < 6; i++) {
                 Block block = event.getBlock().getLocation().clone().add(0, i, 0).getBlock();
