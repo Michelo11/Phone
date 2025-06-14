@@ -29,7 +29,7 @@
 
 ## About The Project
 
-Welcome to the Phone plugin repository, the right solution for introducing modern communication features to your Minecraft server. This plugin revolutionizes player interaction by bringing contacts, calls, and careers directly into the game from a phone item.
+Welcome to the Phone plugin repository, the right solution for introducing modern communication features to your Minecraft server. This plugin revolutionizes player interaction by bringing contacts, calls, and carriers directly into the game from a phone item.
 
 ## Getting Started
 
