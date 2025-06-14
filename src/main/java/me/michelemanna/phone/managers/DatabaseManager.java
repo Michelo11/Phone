@@ -76,18 +76,18 @@ public class DatabaseManager {
         });
     }
 
-    public void renewCareer(UUID owner, String career) {
+    public void renewCareer(UUID owner, String carrier) {
         Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
             try {
                 Connection connection = provider.getConnection();
-                PreparedStatement statement = connection.prepareStatement("UPDATE phoneNumbers SET lastRenew = ?, messageCount = ?, career = ? WHERE owner = ?");
+                PreparedStatement statement = connection.prepareStatement("UPDATE phoneNumbers SET lastRenew = ?, messageCount = ?, carrier = ? WHERE owner = ?");
 
                 statement.setLong(1, System.currentTimeMillis());
                 statement.setInt(2, 0);
-                statement.setString(3, career);
+                statement.setString(3, carrier);
                 statement.setString(4, owner.toString());
 
-                careersCache.put(owner, career);
+                careersCache.put(owner, carrier);
 
                 statement.executeUpdate();
                 statement.close();
@@ -104,12 +104,12 @@ public class DatabaseManager {
         Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
             try {
                 Connection connection = provider.getConnection();
-                PreparedStatement statement = connection.prepareStatement("SELECT lastRenew, messageCount, career FROM phoneNumbers WHERE owner = ?");
+                PreparedStatement statement = connection.prepareStatement("SELECT lastRenew, messageCount, carrier FROM phoneNumbers WHERE owner = ?");
 
                 statement.setString(1, owner.toString());
 
                 ResultSet set = statement.executeQuery();
-                future.complete(set.next() ? new Sim(set.getInt("messageCount"), set.getLong("lastRenew"), set.getString("career")) : null);
+                future.complete(set.next() ? new Sim(set.getInt("messageCount"), set.getLong("lastRenew"), set.getString("carrier")) : null);
 
                 statement.close();
                 provider.closeConnection(connection);
@@ -260,7 +260,7 @@ public class DatabaseManager {
                 List<Repeater> locations = new ArrayList<>();
 
                 while (set.next()) {
-                    locations.add(new Repeater(new Location(Bukkit.getWorld(set.getString("world")), set.getInt("x"), set.getInt("y"), set.getInt("z")), set.getInt("speed"), set.getInt("range"), set.getString("career")));
+                    locations.add(new Repeater(new Location(Bukkit.getWorld(set.getString("world")), set.getInt("x"), set.getInt("y"), set.getInt("z")), set.getInt("speed"), set.getInt("range"), set.getString("carrier")));
                 }
 
                 future.complete(locations);
@@ -276,11 +276,11 @@ public class DatabaseManager {
         return future;
     }
 
-    public void addRepeater(Location location, int speed, int range, String career) {
+    public void addRepeater(Location location, int speed, int range, String carrier) {
         Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
             try {
                 Connection connection = provider.getConnection();
-                PreparedStatement statement = connection.prepareStatement("INSERT INTO repeaters (x, y, z, world, speed, `range`, career) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                PreparedStatement statement = connection.prepareStatement("INSERT INTO repeaters (x, y, z, world, speed, `range`, carrier) VALUES (?, ?, ?, ?, ?, ?, ?)");
 
                 statement.setInt(1, location.getBlockX());
                 statement.setInt(2, location.getBlockY());
@@ -288,7 +288,7 @@ public class DatabaseManager {
                 statement.setString(4, location.getWorld().getName());
                 statement.setInt(5, speed);
                 statement.setInt(6, range);
-                statement.setString(7, career);
+                statement.setString(7, carrier);
 
                 statement.executeUpdate();
                 statement.close();
@@ -323,7 +323,7 @@ public class DatabaseManager {
         Bukkit.getScheduler().runTaskAsynchronously(PhonePlugin.getInstance(), () -> {
             try {
                 Connection connection = provider.getConnection();
-                PreparedStatement statement = connection.prepareStatement("SELECT number, career FROM phoneNumbers WHERE owner = ?");
+                PreparedStatement statement = connection.prepareStatement("SELECT number, carrier FROM phoneNumbers WHERE owner = ?");
 
                 statement.setString(1, owner.toString());
 
@@ -331,8 +331,8 @@ public class DatabaseManager {
                 if (set.next()) {
                     numbersCache.put(owner, set.getLong("number"));
 
-                    if (set.getString("career") != null) {
-                        careersCache.put(owner, set.getString("career"));
+                    if (set.getString("carrier") != null) {
+                        careersCache.put(owner, set.getString("carrier"));
                     }
                 }
 

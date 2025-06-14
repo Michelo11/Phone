@@ -19,7 +19,7 @@ public class RenewCommand implements SubCommand {
         }
 
         if (PhonePlugin.getInstance().getConfig().getConfigurationSection("careers." + args[2].toLowerCase()) == null) {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.invalid-career"));
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.invalid-carrier"));
             return;
         }
 

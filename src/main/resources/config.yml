@@ -34,9 +34,9 @@ messages:
       - "&f/phone menu &8»&f Open the phone menu"
       - "&f/phone number <player> &8»&f Retrieve a player's phone number"
       - "&f/phone regen <player> &8»&f Generate a new phone number"
-      - "&f/phone renew <player> <career> &8»&f Renew the phone subscription"
+      - "&f/phone renew <player> <carrier> &8»&f Renew the phone subscription"
       - "&f/phone whois <number> &8»&f Check who is the owner of a number"
-      - "&f/phone repeater <speed> <range> <career> &8»&f Get a repeater item"
+      - "&f/phone repeater <speed> <range> <carrier> &8»&f Get a repeater item"
       - "&f/phone message <number> <message> &8»&f Send a message to a player"
       - "&f/phone call <number> &8»&f Call a player"
       - "&f/phone accept &8»&f Accept a call"
@@ -61,16 +61,16 @@ messages:
     regen-usage: "&8» &cUsage: /phone regen <player>"
     phone-regenerated: "&8» &7You have regenerated the phone of &e&n%player%"
 
-    renew-usage: "&8» &cUsage: /phone renew <player> <career>"
+    renew-usage: "&8» &cUsage: /phone renew <player> <carrier>"
     invalid-number: "&8» &cInvalid phone number"
-    invalid-career: "&8» &cInvalid career"
+    invalid-carrier: "&8» &cInvalid carrier"
     phone-renewed: "&8» &7You have renewed the phone."
 
     whois-usage: "&8» &cUsage: /phone whois <number>"
     whois: "&8» &aThe phone number &e&n%number% &ais owned by &e%player%"
 
     repeater-given: "&8» &7You have received a repeater"
-    repeater-usage: "&8» &cUsage: /phone repeater <speed> <range> <career>"
+    repeater-usage: "&8» &cUsage: /phone repeater <speed> <range> <carrier>"
     repeater-disabled: "&8» &cThe repeater is disabled"
     invalid-arguments: "&8» &cInvalid argument"
 

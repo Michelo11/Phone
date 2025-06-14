@@ -37,7 +37,7 @@ public class RepeaterCommand implements SubCommand {
         }
 
         if (PhonePlugin.getInstance().getConfig().getConfigurationSection("careers." + args[3].toLowerCase()) == null) {
-            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.invalid-career"));
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.invalid-carrier"));
             return;
         }
 
@@ -51,7 +51,7 @@ public class RepeaterCommand implements SubCommand {
             nbt.setBoolean("repeater", true);
             nbt.setInteger("speed", speed);
             nbt.setInteger("range", range);
-            nbt.setString("career", args[3].toLowerCase());
+            nbt.setString("carrier", args[3].toLowerCase());
         });
 
         player.getInventory().addItem(repeater);
