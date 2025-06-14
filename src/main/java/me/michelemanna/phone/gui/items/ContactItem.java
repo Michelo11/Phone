@@ -58,7 +58,7 @@ public class ContactItem extends AbstractItem {
                 return;
             }
 
-            if (System.currentTimeMillis() - sim.lastRenew() > 1000*60*60*24*PhonePlugin.getInstance().getConfig().getLong("careers." + sim.carrier() + ".duration")) {
+            if (System.currentTimeMillis() - sim.lastRenew() > 1000*60*60*24*PhonePlugin.getInstance().getConfig().getLong("carriers." + sim.carrier() + ".duration")) {
                 player.sendMessage(PhonePlugin.getInstance().getMessage("gui.phone-expired"));
                 return;
             }
@@ -71,7 +71,7 @@ public class ContactItem extends AbstractItem {
 
             switch (clickType) {
                 case LEFT:
-                    if (sim.messagesSent() >= PhonePlugin.getInstance().getConfig().getLong("careers." + sim.carrier() + ".messages")) {
+                    if (sim.messagesSent() >= PhonePlugin.getInstance().getConfig().getLong("carriers." + sim.carrier() + ".messages")) {
                         player.sendMessage(PhonePlugin.getInstance().getMessage("gui.no-messages"));
                         return;
                     }

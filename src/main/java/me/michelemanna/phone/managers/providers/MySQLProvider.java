@@ -86,7 +86,7 @@ public class MySQLProvider implements ConnectionProvider {
         }
 
         if (PhonePlugin.getInstance().getConfig().getInt("version", 0) <= 2) {
-            String defaultCareer = PhonePlugin.getInstance().getConfig().getConfigurationSection("careers").getKeys(false).iterator().next();
+            String defaultCareer = PhonePlugin.getInstance().getConfig().getConfigurationSection("carriers").getKeys(false).iterator().next();
 
             statement.execute(
                     "ALTER TABLE repeaters ADD COLUMN carrier VARCHAR(36) NOT NULL DEFAULT '" + defaultCareer + "'"

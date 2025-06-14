@@ -36,7 +36,7 @@ public class RepeaterCommand implements SubCommand {
             return;
         }
 
-        if (PhonePlugin.getInstance().getConfig().getConfigurationSection("careers." + args[3].toLowerCase()) == null) {
+        if (PhonePlugin.getInstance().getConfig().getConfigurationSection("carriers." + args[3].toLowerCase()) == null) {
             player.sendMessage(PhonePlugin.getInstance().getMessage("commands.invalid-carrier"));
             return;
         }
