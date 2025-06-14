@@ -37,7 +37,7 @@ public class MenuCommand implements SubCommand {
                             return;
                         }
 
-                        new PhoneMenu(contacts, sim.career()).open(player);
+                        new PhoneMenu(contacts, sim.carrier()).open(player);
                     });
                 } catch (Exception e) {
                     e.printStackTrace();

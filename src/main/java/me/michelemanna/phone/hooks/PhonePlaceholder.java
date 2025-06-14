@@ -36,9 +36,9 @@ public class PhonePlaceholder extends PlaceholderExpansion {
                 Repeater nearest = PhonePlugin.getInstance().getRepeaterManager().getNearest(player.getLocation());
                 return nearest == null ? "N/A" : String.valueOf(Math.round(nearest.location().distance(player.getLocation())));
             }
-            case "career":
-                String career = PhonePlugin.getInstance().getDatabase().getCareersCache().get(player.getUniqueId());
-                return career == null ? "N/A" : career;
+            case "carrier":
+                String carrier = PhonePlugin.getInstance().getDatabase().getCareersCache().get(player.getUniqueId());
+                return carrier == null ? "N/A" : carrier;
             case "connection": {
                 Repeater nearest = PhonePlugin.getInstance()
                         .getRepeaterManager()

@@ -5,12 +5,12 @@ import java.util.Objects;
 public final class Sim {
     private final int messagesSent;
     private final long lastRenew;
-    private final String career;
+    private final String carrier;
 
-    public Sim(int messagesSent, long lastRenew, String career) {
+    public Sim(int messagesSent, long lastRenew, String carrier) {
         this.messagesSent = messagesSent;
         this.lastRenew = lastRenew;
-        this.career = career;
+        this.carrier = carrier;
     }
 
     public int messagesSent() {
@@ -21,20 +21,20 @@ public final class Sim {
         return lastRenew;
     }
 
-    public String career() {
-        return career;
+    public String carrier() {
+        return carrier;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Sim sim = (Sim) o;
-        return messagesSent == sim.messagesSent && lastRenew == sim.lastRenew && Objects.equals(career, sim.career);
+        return messagesSent == sim.messagesSent && lastRenew == sim.lastRenew && Objects.equals(carrier, sim.carrier);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(messagesSent, lastRenew, career);
+        return Objects.hash(messagesSent, lastRenew, carrier);
     }
 
     @Override
@@ -42,7 +42,7 @@ public final class Sim {
         return "Sim{" +
                 "messagesSent=" + messagesSent +
                 ", lastRenew=" + lastRenew +
-                ", career='" + career + '\'' +
+                ", carrier='" + carrier + '\'' +
                 '}';
     }
 }

@@ -53,7 +53,7 @@ public class PlayerListener implements Listener {
                             return;
                         }
 
-                        new PhoneMenu(contacts, sim.career()).open(event.getPlayer());
+                        new PhoneMenu(contacts, sim.carrier()).open(event.getPlayer());
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
