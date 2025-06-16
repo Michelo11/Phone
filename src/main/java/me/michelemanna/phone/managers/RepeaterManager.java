@@ -15,9 +15,9 @@ public class RepeaterManager {
         PhonePlugin.getInstance().getDatabase().getRepeaters().thenAccept(repeaters::addAll);
     }
 
-    public void addRepeater(Location location, int speed, int range, String career) {
-        repeaters.add(new Repeater(location, speed, range, career));
-        PhonePlugin.getInstance().getDatabase().addRepeater(location, speed, range, career);
+    public void addRepeater(Location location, int speed, int range, String carrier) {
+        repeaters.add(new Repeater(location, speed, range, carrier));
+        PhonePlugin.getInstance().getDatabase().addRepeater(location, speed, range, carrier);
     }
 
     public void removeRepeater(Location location) {
@@ -29,14 +29,14 @@ public class RepeaterManager {
         return repeaters.stream().anyMatch(repeater -> repeater.location().equals(location));
     }
 
-    public boolean isNear(Location location, String career) {
+    public boolean isNear(Location location, String carrier) {
         return repeaters.stream()
-                .anyMatch(repeater -> repeater.location().getWorld().equals(location.getWorld()) && repeater.location().distance(location) <= repeater.range() && repeater.career().equals(career));
+                .anyMatch(repeater -> repeater.location().getWorld().equals(location.getWorld()) && repeater.location().distance(location) <= repeater.range() && repeater.carrier().equals(carrier));
     }
 
-    public Repeater getNearest(Location location, String career) {
+    public Repeater getNearest(Location location, String carrier) {
         return repeaters.stream()
-                .filter(repeater -> repeater.location().getWorld().equals(location.getWorld()) && repeater.career().equals(career))
+                .filter(repeater -> repeater.location().getWorld().equals(location.getWorld()) && repeater.carrier().equals(carrier))
                 .min(Comparator.comparingDouble(repeater -> repeater.location().distance(location)))
                 .orElse(null);
     }

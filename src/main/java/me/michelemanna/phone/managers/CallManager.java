@@ -57,7 +57,7 @@ public class CallManager implements ICallManager {
                 return;
             }
 
-            Repeater nearestRepeater = PhonePlugin.getInstance().getRepeaterManager().getNearest(player.getLocation(), sim.career());
+            Repeater nearestRepeater = PhonePlugin.getInstance().getRepeaterManager().getNearest(player.getLocation(), sim.carrier());
 
             boolean enabled = PhonePlugin.getInstance().getConfig().getBoolean("repeater-enabled", true);
             if (enabled &&

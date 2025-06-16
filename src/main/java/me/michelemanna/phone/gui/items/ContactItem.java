@@ -58,20 +58,20 @@ public class ContactItem extends AbstractItem {
                 return;
             }
 
-            if (System.currentTimeMillis() - sim.lastRenew() > 1000*60*60*24*PhonePlugin.getInstance().getConfig().getLong("careers." + sim.career() + ".duration")) {
+            if (System.currentTimeMillis() - sim.lastRenew() > 1000*60*60*24*PhonePlugin.getInstance().getConfig().getLong("carriers." + sim.carrier() + ".duration")) {
                 player.sendMessage(PhonePlugin.getInstance().getMessage("gui.phone-expired"));
                 return;
             }
 
             if (PhonePlugin.getInstance().getConfig().getBoolean("repeater-enabled", true) &&
-                    !PhonePlugin.getInstance().getRepeaterManager().isNear(player.getLocation(), sim.career())) {
+                    !PhonePlugin.getInstance().getRepeaterManager().isNear(player.getLocation(), sim.carrier())) {
                 player.sendMessage(PhonePlugin.getInstance().getMessage("gui.no-signal"));
                 return;
             }
 
             switch (clickType) {
                 case LEFT:
-                    if (sim.messagesSent() >= PhonePlugin.getInstance().getConfig().getLong("careers." + sim.career() + ".messages")) {
+                    if (sim.messagesSent() >= PhonePlugin.getInstance().getConfig().getLong("carriers." + sim.carrier() + ".messages")) {
                         player.sendMessage(PhonePlugin.getInstance().getMessage("gui.no-messages"));
                         return;
                     }
