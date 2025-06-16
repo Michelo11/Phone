@@ -12,4 +12,4 @@ You can generate a new number with `/phone regen <player>`.
 
 You can create a subscription and let your users pay in game currencies to renew it. You can use the following command to renew or create a new subscription:
 
-> `/phone renew <player> <career>`
+> `/phone renew <player> <carrier>`

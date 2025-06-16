@@ -36,7 +36,7 @@ public class RenewCommand implements SubCommand {
                 return;
             }
 
-            PhonePlugin.getInstance().getDatabase().renewCareer(target.getUniqueId(), args[2].toLowerCase());
+            PhonePlugin.getInstance().getDatabase().renewCarrier(target.getUniqueId(), args[2].toLowerCase());
             player.sendMessage(PhonePlugin.getInstance().getMessage("commands.phone-renewed"));
         });
     }
