@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'me.michelemanna'
-version = '2.0.5'
+version = '2.0.6'
 
 repositories {
     mavenCentral()
@@ -38,8 +38,8 @@ dependencies {
     compileOnly "me.clip:placeholderapi:2.11.6"
     compileOnly "de.maxhenkel.voicechat:voicechat-api:2.5.27"
     implementation "com.zaxxer:HikariCP:4.0.3"
-    implementation "xyz.xenondevs.invui:invui:1.45"
-    implementation "de.tr7zw:item-nbt-api:2.15.0"
+    implementation "xyz.xenondevs.invui:invui:1.46"
+    implementation "de.tr7zw:item-nbt-api:2.15.1"
 }
 
 shadowJar {
