@@ -89,10 +89,10 @@ public class MySQLProvider implements ConnectionProvider {
             String defaultCarrier = PhonePlugin.getInstance().getConfig().getConfigurationSection("carriers").getKeys(false).iterator().next();
 
             statement.execute(
-                    "ALTER TABLE repeaters ADD COLUMN carrier VARCHAR(36) NOT NULL DEFAULT '" + defaultCarrier + "'"
+                    "ALTER TABLE repeaters ADD COLUMN career VARCHAR(36) NOT NULL DEFAULT '" + defaultCarrier + "'"
             );
             statement.execute(
-              "ALTER TABLE phoneNumbers ADD COLUMN carrier VARCHAR(36) DEFAULT NULL"
+              "ALTER TABLE phoneNumbers ADD COLUMN career VARCHAR(36) DEFAULT NULL"
             );
             PhonePlugin.getInstance().getConfig().set("version", 3);
             PhonePlugin.getInstance().saveConfig();
