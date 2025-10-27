@@ -17,15 +17,10 @@ public class GiveCommand implements SubCommand {
             return;
         }
 
-        if (args.length != 2) {
+        if (args.length < 3 || args.length > 4) {
             player.sendMessage(PhonePlugin.getInstance().getMessage("commands.give-usage"));
             return;
         }
-
-        ItemStack phone = new ItemBuilder(Material.PRISMARINE_SHARD)
-                .setDisplayName("§bPhone")
-                .setCustomModelData(1)
-                .get();
 
         Player target = Bukkit.getPlayer(args[1]);
 
@@ -33,6 +28,33 @@ public class GiveCommand implements SubCommand {
             player.sendMessage(PhonePlugin.getInstance().getMessage("commands.player-not-found"));
             return;
         }
+
+        String type = args[2];
+
+        int customModelData = PhonePlugin.getInstance().getConfig().getInt("phone-type." + type, -1);
+        if (customModelData == -1) {
+            player.sendMessage(PhonePlugin.getInstance().getMessage("commands.give-usage"));
+            return;
+        }
+
+        Long customNumber = null;
+        if (args.length == 4) {
+            try {
+                customNumber = Long.parseLong(args[3]);
+                if (customNumber < 0) {
+                    player.sendMessage(PhonePlugin.getInstance().getMessage("commands.invalid-number"));
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                player.sendMessage(PhonePlugin.getInstance().getMessage("commands.invalid-number"));
+                return;
+            }
+        }
+
+        ItemStack phone = new ItemBuilder(Material.PRISMARINE_SHARD)
+                .setDisplayName("§bPhone")
+                .setCustomModelData(customModelData)
+                .get();
 
         NBT.modify(phone, nbt -> {
             nbt.setString("phone_owner", target.getUniqueId().toString());
@@ -46,9 +68,10 @@ public class GiveCommand implements SubCommand {
             target.sendMessage(PhonePlugin.getInstance().getMessage("commands.phone-received").replace("%player%", player.getName()));
         }
 
+        Long finalCustomNumber = customNumber;
         PhonePlugin.getInstance().getDatabase().getPhoneNumber(target.getUniqueId()).thenAccept(number -> {
             if (number == null) {
-                number = (long) (Math.random() * 10000000000L);
+                number = finalCustomNumber != null ? finalCustomNumber : (long) (Math.random() * 10000000000L);
 
                 PhonePlugin.getInstance().getDatabase().createPhoneNumber(target.getUniqueId(), number);
 

@@ -18,6 +18,11 @@ carriers:
     messages: 100
     duration: 30
 
+phone-type:
+  iphone: 1
+  pixel: 2
+  galaxy: 3
+
 repeater-enabled: true
 repeater-distance: 30
 
@@ -30,10 +35,10 @@ messages:
       - "&6&m-------&f&m-------&6&m-------&f&m-------&6&m-------&f&m-------"
       - "&r   &fRunning &6Phone&f by &6Michelo11"
       - "&r"
-      - "&f/phone give <player> &8»&f Give a phone to a player"
+      - "&f/phone give <player> <type> [number] &8»&f Give a phone to a player"
       - "&f/phone menu &8»&f Open the phone menu"
       - "&f/phone number <player> &8»&f Retrieve a player's phone number"
-      - "&f/phone regen <player> &8»&f Generate a new phone number"
+      - "&f/phone regen <player> [number] &8»&f Generate a new phone number"
       - "&f/phone renew <player> <carrier> &8»&f Renew the phone subscription"
       - "&f/phone whois <number> &8»&f Check who is the owner of a number"
       - "&f/phone repeater <speed> <range> <carrier> &8»&f Get a repeater item"
@@ -50,7 +55,7 @@ messages:
     no-permission: "&8» &cYou don't have permission to use this command"
     player-not-found: "&8» &cThe player is not online"
 
-    give-usage: "&8» &cUsage: /phone give <player>"
+    give-usage: "&8» &cUsage: /phone give <player> <type> [number]"
     phone-given: "&8» &7You have given a phone to &e&n%player%"
     phone-received: "&8» &7You have received a phone from &e&n%player%"
     phone-number: "&8» &7Your phone number is &e&n%number%"

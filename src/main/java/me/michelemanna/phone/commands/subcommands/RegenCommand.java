@@ -12,12 +12,10 @@ public class RegenCommand implements SubCommand {
             return;
         }
 
-        if (args.length != 2) {
+        if (args.length < 2 || args.length > 3) {
             player.sendMessage(PhonePlugin.getInstance().getMessage("commands.regen-usage"));
             return;
         }
-
-        long regenNumber = (long) (Math.random() * 10000000000L);
 
         Player target = PhonePlugin.getInstance().getServer().getPlayer(args[1]);
 
@@ -25,6 +23,22 @@ public class RegenCommand implements SubCommand {
             player.sendMessage(PhonePlugin.getInstance().getMessage("commands.player-not-found"));
             return;
         }
+
+        Long customNumber = null;
+        if (args.length == 3) {
+            try {
+                customNumber = Long.parseLong(args[2]);
+                if (customNumber < 0) {
+                    player.sendMessage(PhonePlugin.getInstance().getMessage("commands.invalid-number"));
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                player.sendMessage(PhonePlugin.getInstance().getMessage("commands.invalid-number"));
+                return;
+            }
+        }
+
+        long regenNumber = customNumber != null ? customNumber : (long) (Math.random() * 10000000000L);
 
         PhonePlugin.getInstance().getDatabase().updatePhoneNumber(target.getUniqueId(), regenNumber);
 
