@@ -2,11 +2,19 @@ package me.michelemanna.phone.commands.subcommands;
 
 import me.michelemanna.phone.PhonePlugin;
 import me.michelemanna.phone.commands.SubCommand;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class AcceptCommand implements SubCommand {
     @Override
-    public void execute(Player player, String[] args) {
+    public void execute(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(PhonePlugin.getInstance().getMessage("commands.player-only"));
+            return;
+        }
+
+        Player player = (Player) sender;
+
         if (!player.hasPermission("phone.accept")) {
             player.sendMessage(PhonePlugin.getInstance().getMessage("commands.no-permission"));
             return;

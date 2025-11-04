@@ -38,18 +38,13 @@ public class PhoneCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(PhonePlugin.getInstance().getMessage("commands.player-only"));
-            return true;
-        }
-
         if (args.length == 0) {
-            subCommands.get("help").execute((Player) sender, args);
+            subCommands.get("help").execute(sender, args);
             return true;
         }
 
         if (subCommands.containsKey(args[0].toLowerCase())) {
-            subCommands.get(args[0].toLowerCase()).execute((Player) sender, args);
+            subCommands.get(args[0].toLowerCase()).execute(sender, args);
             return true;
         }
 

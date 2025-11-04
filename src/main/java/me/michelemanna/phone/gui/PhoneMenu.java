@@ -81,6 +81,10 @@ public class PhoneMenu implements InventoryHolder {
         items.put(125, new CloseItem(player));
 
         Bukkit.getScheduler().runTask(PhonePlugin.getInstance(), () -> {
+            if (!(player.getOpenInventory().getTopInventory().getHolder() instanceof PhoneMenu)) {
+                return;
+            }
+            
             items.forEach((slot, item) -> {
                 Inventory inv = inventory;
 

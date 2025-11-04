@@ -3,11 +3,12 @@ package me.michelemanna.phone.commands.subcommands;
 import me.michelemanna.phone.PhonePlugin;
 import me.michelemanna.phone.commands.SubCommand;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class RenewCommand implements SubCommand {
     @Override
-    public void execute(Player player, String[] args) {
+    public void execute(CommandSender player, String[] args) {
         if (!player.hasPermission("phone.renew")) {
             player.sendMessage(PhonePlugin.getInstance().getMessage("commands.no-permission"));
             return;
