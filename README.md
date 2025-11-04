@@ -16,7 +16,7 @@
   </p>
 </p>
 
-![Downloads](https://img.shields.io/github/downloads/Michelo11/Phone/total) ![Stargazers](https://img.shields.io/github/stars/Michelo11/Phone?style=social) ![Issues](https://img.shields.io/github/issues/Michelo11/Phone) ![License](https://img.shields.io/github/license/Michelo11/Phone) 
+![Downloads](https://img.shields.io/github/downloads/Michelo11/Phone/total) ![Stargazers](https://img.shields.io/github/stars/Michelo11/Phone?style=social) ![Issues](https://img.shields.io/github/issues/Michelo11/Phone) ![License](https://img.shields.io/github/license/Michelo11/Phone) [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Michelo11/Phone)
 
 ## Table Of Contents
 
