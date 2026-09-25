@@ -39,9 +39,8 @@ public class InventoryListener implements Listener {
         Bukkit.getScheduler().runTaskLater(PhonePlugin.getInstance(), () -> {
             ItemStack[] contents = PhoneMenu.getPlayerContent(player);
 
-            player.getInventory().clear();
-
             if (contents != null) {
+				player.getInventory().clear();
                 player.getInventory().setContents(contents);
             }
         }, 1);

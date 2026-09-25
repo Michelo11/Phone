@@ -10,6 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -101,5 +102,25 @@ public class PlayerListener implements Listener {
         }
 
         event.getPlayer().setResourcePack(PhonePlugin.getInstance().getConfig().getString("resourcepack.url", "https://github.com/Michelo11/Phone/releases/download/v1.10.4/Custom.Phone.zip"));
+    }
+
+    @EventHandler
+    public void onDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+
+        if (PhonePlugin.getInstance().getCallManager().isCalling(player)) {
+            Player target = PhonePlugin.getInstance().getCallManager().getCall(player);
+            
+            PhonePlugin.getInstance().getCallManager().endCall(player);
+            
+            player.sendMessage(PhonePlugin.getInstance().getMessage("gui.call-ended-death"));
+            
+            if (target != null) {
+                target.sendMessage(PhonePlugin.getInstance().getMessage("gui.call-ended-death-other")
+                        .replace("%player%", player.getName()));
+            }
+        }
+
+        PhonePlugin.getInstance().getCallManager().getPendingCalls().remove(player);
     }
 }

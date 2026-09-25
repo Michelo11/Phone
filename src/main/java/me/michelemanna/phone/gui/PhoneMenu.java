@@ -33,7 +33,7 @@ public class PhoneMenu implements InventoryHolder {
 
     public void open(Player player) {
         Bukkit.getScheduler().runTask(PhonePlugin.getInstance(), () -> {
-            INVENTORIES.put(player, player.getInventory().getContents());
+			INVENTORIES.put(player, player.getInventory().getContents());
 
             redraw(player);
 
@@ -46,7 +46,6 @@ public class PhoneMenu implements InventoryHolder {
             inventory = Bukkit.createInventory(this, 54, PhonePlugin.getInstance().getMessage("gui.title"));
         }
 
-        player.getInventory().clear();
         inventory.clear();
 
         for (int i = 0; i < 14; i++) {
@@ -84,6 +83,8 @@ public class PhoneMenu implements InventoryHolder {
             if (!(player.getOpenInventory().getTopInventory().getHolder() instanceof PhoneMenu)) {
                 return;
             }
+            
+            player.getInventory().clear();
             
             items.forEach((slot, item) -> {
                 Inventory inv = inventory;

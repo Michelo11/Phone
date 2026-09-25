@@ -124,6 +124,8 @@ messages:
 
     deny-message: "&8» &cCall denied"
     close-message: "&8» &cYou have closed the call"
+    call-ended-death: "&8» &cThe call has ended because you died"
+    call-ended-death-other: "&8» &cThe call has ended because &e%player% &cdied"
 
     phone-not-renewed: "&8» &cThe phone has not been renewed"
     phone-expired: "&8» &cThe phone has expired"
